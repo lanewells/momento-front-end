@@ -1,0 +1,167 @@
+/* General container */
+.item-form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px auto;
+  width: 100%; /* Set to 100% width for full responsiveness */
+  max-width: 400px; /* Constrain the form width for large screens */
+  font-family: Arial, sans-serif;
+  background-color: #FAF3E0; /* Cream background */
+  border-radius: 8px;
+  padding: 20px;
+  box-sizing: border-box; /* Include padding in width calculation */
+}
+
+/* Form heading */
+.item-form-heading {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #2C2C54; /* Dark navy for heading text */
+  text-align: center;
+}
+
+/* Form styling */
+.item-form {
+  width: 100%; /* Full width within the container */
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.item-form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+/* Labels */
+.item-form-label {
+  font-size: 14px;
+  font-weight: bold;
+  color: #2C2C54; /* Dark navy for labels */
+}
+
+/* Inputs */
+.item-form-input,
+.item-form-textarea {
+  padding: 10px;
+  border: 1px solid #F5A623; /* Orange border */
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: #FFF8E7; /* Slightly lighter cream */
+  color: #2C2C54; /* Dark navy text */
+  width: 100%; /* Full width for responsiveness */
+  box-sizing: border-box; /* Include padding in width */
+}
+
+.item-form-textarea {
+  resize: none;
+  height: 80px;
+}
+
+/* Button */
+.item-form-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  color: #FAF3E0; /* Cream text */
+  background-color: #F5A623; /* Bright orange */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s ease;
+  width: 100%; /* Full width for consistent appearance */
+}
+
+.item-form-button:disabled {
+  background-color: #F5A62399; /* Muted orange */
+  cursor: not-allowed;
+}
+
+.item-form-button:hover:enabled {
+  background-color: #CC8600; /* Darker orange for hover */
+}
+
+/* Response message */
+.item-form-response {
+  margin-top: 20px;
+  font-size: 14px;
+  text-align: center;
+  color: #2C2C54; /* Dark navy for response message */
+}
+
+/* Style for the checkbox container using Flexbox */
+.checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; /* Space between checkboxes */
+}
+
+.item-form-checkbox {
+  margin-right: 5px; /* Space between checkbox and label */
+}
+
+.item-form-label {
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #2C2C54; /* Dark navy for checkbox labels */
+}
+
+/* Header */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #F5A623; /* Bright orange */
+  border-bottom: solid 4px #001f3d;
+  padding: 10px 20px;
+  color: #001f3d; /* Cream text */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.app-logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.app-menu ul {
+  list-style: none;
+  display: flex;
+  gap: 15px;
+  margin: 0;
+  padding: 0;
+}
+
+.app-menu li a {
+  text-decoration: none;
+  color: #FAF3E0; /* Cream text */
+  font-size: 16px;
+}
+
+.app-menu li a:hover {
+  text-decoration: underline;
+}
+
+body {
+  display: block !important;
+  place-items:inherit !important;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .app-menu ul {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .item-form-container {
+    padding: 15px;
+  }
+
+  .item-form-heading {
+    font-size: 20px;
+  }
+}

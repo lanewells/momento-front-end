@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./src/components/ItemForm/ItemForm.css">
+
+    <title>Document</title>
+    
+</head>
+<body>
+    <div class="item-form-container">
+        <h1 class="item-form-heading">Add a New Item</h1>
+        <form class="item-form">
+          <!-- Type of Media -->
+          <div class="item-form-section">
+            <label class="item-form-label">Type of Media</label>
+            <div class="checkbox-group">
+              <label for="text">
+                <input type="checkbox" id="text" name="type" value="text" class="item-form-checkbox">
+                Text
+              </label>
+              <label for="image">
+                <input type="checkbox" id="image" name="type" value="image" class="item-form-checkbox">
+                Image
+              </label>
+              <label for="audio">
+                <input type="checkbox" id="audio" name="type" value="audio" class="item-form-checkbox">
+                Audio
+              </label>
+              <label for="hyperlink">
+                <input type="checkbox" id="hyperlink" name="type" value="hyperlink" class="item-form-checkbox">
+                Hyperlink
+              </label>
+            </div>
+          </div>
+      
+          <!-- Text -->
+          <div class="item-form-section">
+            <label class="item-form-label" for="text">Message</label>
+            <textarea
+              name="text"
+              id="text"
+              placeholder="Enter your message"
+              class="item-form-textarea"></textarea>
+          </div>
+      
+          <!-- Image Source and Alt Text -->
+          <div class="item-form-section">
+            <label class="item-form-label" for="src">Source URL</label>
+            <input
+              type="text"
+              name="src"
+              id="src"
+              placeholder="Enter the source URL"
+              class="item-form-input"
+            />
+          </div>
+          <div class="item-form-section">
+            <label class="item-form-label" for="altText">Alt Text</label>
+            <input
+              type="text"
+              name="altText"
+              id="altText"
+              placeholder="Describe the content"
+              class="item-form-input"
+            />
+          </div>
+      
+          <!-- Submit Button -->
+          <button
+            type="submit"
+            class="item-form-button">
+            Submit Item
+          </button>
+        </form>
+      
+        <!-- Response Message -->
+        <p class="item-form-response"></p>
+      </div>
+      
+    
+</body>
+</html>
