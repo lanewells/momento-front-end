@@ -48,7 +48,7 @@ const App = () => {
         {console.log("user state in header:", user)}
         {user ? (
           <div>
-            <p>Welcome, {user.username || "Guest"}!</p>
+            <p>Welcome, {user.username}!</p>
             <button onClick={handleLogout}>Logout</button>
           </div>
         ) : (
