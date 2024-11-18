@@ -1,68 +1,68 @@
-import React, { useState } from "react";
-import axios from "axios";
-import "./ItemForm.css"; // Import the CSS file for styling
+import { useState } from "react"
+import axios from "axios"
+import "./ItemForm.css" // Import the CSS file for styling
 
 const ItemForm = () => {
   const [formData, setFormData] = useState({
-    type: "",  
+    type: "",
     text: "",
     src: "",
     altText: "",
-  });
+  })
 
-  const [loading, setLoading] = useState(false);
-  const [responseMessage, setResponseMessage] = useState("");
-  const [showMessage, setShowMessage] = useState(false); 
+  const [loading, setLoading] = useState(false)
+  const [responseMessage, setResponseMessage] = useState("")
+  const [showMessage, setShowMessage] = useState(false)
 
   // Checkbox - only one checkbox at a time
   const handleChange = (e) => {
-    const { value } = e.target;
+    const { value } = e.target
     setFormData((prevFormData) => ({
       ...prevFormData,
-      type: value, 
-    }));
-  };
+      type: value,
+    }))
+  }
 
   // Text field changes
   const handleTextChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+    const { name, value } = e.target
+    setFormData({ ...formData, [name]: value })
+  }
 
   // Form submission with Axios
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setResponseMessage("");
-    setShowMessage(false);
+    e.preventDefault()
+    setLoading(true)
+    setResponseMessage("")
+    setShowMessage(false)
 
     try {
       // Replace with your API URL
-      const apiUrl = "https://your-api-endpoint.com/items";
+      const apiUrl = "https://your-api-endpoint.com/items"
 
       // Make the POST request using Axios
-      const response = await axios.post(apiUrl, formData);
+      const response = await axios.post(apiUrl, formData)
 
       // Assuming response includes a success message
-      setResponseMessage(response.data.message || "Item added successfully!");
-      
+      setResponseMessage(response.data.message || "Item added successfully!")
+
       // Clear the form
       setFormData({
         type: "",
         text: "",
         src: "",
         altText: "",
-      });
+      })
     } catch (error) {
       setResponseMessage(
         error.response?.data?.message || "Failed to add item. Please try again."
-      );
-      console.error("Error submitting the form:", error);
+      )
+      console.error("Error submitting the form:", error)
     } finally {
-      setLoading(false);
-      setShowMessage(true); // Show the response message after submission
+      setLoading(false)
+      setShowMessage(true) // Show the response message after submission
     }
-  };
+  }
 
   return (
     <div>
@@ -145,7 +145,9 @@ const ItemForm = () => {
           )}
 
           {/* Source URL and Alt Text for Image, Audio, and Hyperlink */}
-          {(formData.type === "image" || formData.type === "audio" || formData.type === "hyperlink") && (
+          {(formData.type === "image" ||
+            formData.type === "audio" ||
+            formData.type === "hyperlink") && (
             <>
               <div className="item-form-section">
                 <label className="item-form-label">Source URL</label>
@@ -173,11 +175,7 @@ const ItemForm = () => {
           )}
 
           {/* Submit Button */}
-          <button
-            type="submit"
-            className="item-form-button"
-            disabled={loading}
-          >
+          <button type="submit" className="item-form-button" disabled={loading}>
             {loading ? "Submitting..." : "Submit Item"}
           </button>
         </form>
@@ -188,7 +186,7 @@ const ItemForm = () => {
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ItemForm;
+export default ItemForm

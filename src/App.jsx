@@ -44,7 +44,6 @@ const App = () => {
 
   return (
     <div>
-      <ItemForm />
       <header>
         {console.log("user state in header:", user)}
         {user ? (
@@ -58,6 +57,7 @@ const App = () => {
       </header>
 
       <Routes>
+        <Route path="/itemform" element={<ItemForm />} />
         <Route
           path="/"
           element={
@@ -82,10 +82,3 @@ const App = () => {
 }
 
 export default App
-
-
-
-
-
-
-
