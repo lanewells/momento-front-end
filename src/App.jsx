@@ -3,9 +3,10 @@ import { Routes, Route } from "react-router-dom"
 import SignupForm from "./components/SignupForm/SignupForm"
 import SigninForm from "./components/SigninForm/SigninForm"
 import ItemForm from "./components/ItemForm/ItemForm"
+import Dashboard from "./components/Dashboard/Dashboard"
+// import CapsulesList from "./components/CapsulesList/CapsulesList"
 import axios from "axios"
 import { Navigate } from "react-router-dom"
-import HomePage from "./components/HomePage/HomePage"
 
 const App = () => {
   const [user, setUser] = useState(null)
@@ -44,25 +45,13 @@ const App = () => {
 
   return (
     <div>
-      <header>
-        {console.log("user state in header:", user)}
-        {user ? (
-          <div>
-            <p>Welcome, {user.username}!</p>
-            <button onClick={handleLogout}>Logout</button>
-          </div>
-        ) : (
-          <p>Please sign in.</p>
-        )}
-      </header>
-
       <Routes>
         <Route path="/itemform" element={<ItemForm />} />
         <Route
           path="/"
           element={
             user ? (
-              <HomePage user={user} handleLogout={handleLogout} />
+              <Dashboard user={user} handleLogout={handleLogout} />
             ) : (
               <Navigate to="/signin" />
             )
@@ -76,6 +65,7 @@ const App = () => {
           path="/signin"
           element={<SigninForm onSignin={handleSignin} />}
         />
+        {/* <Route path="/capsules-list/:userId" element={<CapsulesList />} /> */}
       </Routes>
     </div>
   )
