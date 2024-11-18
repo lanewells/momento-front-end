@@ -14,14 +14,14 @@ export default [
       parserOptions: {
         ecmaVersion: "latest",
         ecmaFeatures: { jsx: true },
-        sourceType: "module"
-      }
+        sourceType: "module",
+      },
     },
-    settings: { react: { version: "18.3" } },
+    settings: { react: { version: "detect" } },
     plugins: {
       react,
       "react-hooks": reactHooks,
-      "react-refresh": reactRefresh
+      "react-refresh": reactRefresh,
     },
     rules: {
       ...js.configs.recommended.rules,
@@ -31,10 +31,12 @@ export default [
       "react/jsx-no-target-blank": "off",
       "react-refresh/only-export-components": [
         "warn",
-        { allowConstantExport: true }
+        { allowConstantExport: true },
       ],
       "react/prop-types": "off",
-      "react/no-unescaped-entities": "off"
-    }
-  }
+      "react/no-unescaped-entities": "off",
+      "react/react-in-jsx-scope": "off",
+      "react/jsx-uses-react": "off",
+    },
+  },
 ]
