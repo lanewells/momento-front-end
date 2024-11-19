@@ -1,52 +1,58 @@
 import { useState } from 'react';
-import "./ItemForm.css" 
+import axios from 'axios';
+import "./ItemForm.css";
 
 const ItemForm = (props) => {
-  const [formData, setFormData] = useState({type: "", text: "", src: "", altText: "",})
-  const [selectedImage, setSelectedImage] = useState(null); 
-  const [preview, setPreview] = useState(null); 
+  const [formData, setFormData] = useState({ type: "", text: "", src: "", altText: "" });
+  const [submittedData, setSubmittedData] = useState(null); 
+  const [error, setError] = useState(null); 
+  const [loading, setLoading] = useState(false); 
 
   const handleChange = (evt) => {
     setFormData({ ...formData, [evt.target.name]: evt.target.value });
   };
 
-  //Message
   const handleTextChange = (evt) => {
-    const { name, value } = evt.target
-    setFormData({ ...formData, [name]: value })
-  }
-
-  //Image
-  const handleImageChange = (evt) => {
-    const file = evt.target.files[0];
-    if (file) {
-      setSelectedImage(file);
-      setPreview(URL.createObjectURL(file)); 
-    }
+    const { name, value } = evt.target;
+    setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmitForm = (evt) => {
+  const handleSubmitForm = async (evt) => {
     evt.preventDefault();
 
-    // Create a FormData object to handle the file and other fields
-    const formDataToSubmit = new FormData();
-    formDataToSubmit.append("type", formData.type);
-    formDataToSubmit.append("text", formData.text);
-    formDataToSubmit.append("altText", formData.altText);
+    setLoading(true);
+    setError(null);
 
-    if (selectedImage) {
-      formDataToSubmit.append("image", selectedImage); // Append image file
+    try {
+      const token = localStorage.getItem("token"); 
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACK_END_SERVER_URL}/items`, 
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+     // console.log("Submitted Data:", response.data);
+
+      setSubmittedData(response.data);
+
+      
+      setFormData({ type: "", text: "", altText: "" });
+    } catch (err) {
+      console.error("Error submitting form:", err);
+      setError("Failed to submit. Please try again.");
+    } finally {
+      setLoading(false);
     }
-
-    // Reset the form after submission
-    setFormData({ type: '', text: '', altText: '' });
-    setSelectedImage(null);  // Reset image
-    setPreview(null);         // Reset image preview
   };
 
-  return(
-    <>
-      <form onSubmit={handleSubmitForm}>
+  return (
+    <div className="item-form-container">
+      <h2 className="item-form-heading">Submit Your Item</h2>
+      <form className="item-form" onSubmit={handleSubmitForm}>
         <div className="checkbox-group">
           <label htmlFor="text">
             <input
@@ -72,30 +78,6 @@ const ItemForm = (props) => {
             />
             Image
           </label>
-          <label htmlFor="audio">
-            <input
-              type="checkbox"
-              id="audio"
-              name="type"
-              value="audio"
-              className="item-form-checkbox"
-              checked={formData.type === "audio"}
-              onChange={handleChange}
-            />
-            Audio
-          </label>
-          <label htmlFor="hyperlink">
-            <input
-              type="checkbox"
-              id="hyperlink"
-              name="type"
-              value="hyperlink"
-              className="item-form-checkbox"
-              checked={formData.type === "hyperlink"}
-              onChange={handleChange}
-            />
-            Hyperlink
-          </label>
         </div>
 
         {/* Message Textbox */}
@@ -112,43 +94,28 @@ const ItemForm = (props) => {
           </div>
         )}
 
-        {/* Image Input */}
-        {formData.type === "image" && (
-          <div>
-            <label htmlFor="image">Choose an image:</label>
-            <input 
-              type="file" 
-              id="image" 
-              accept="image/*" 
-              onChange={handleImageChange} 
-            />
-            {/* Display Image Preview */}
-            {preview && (
-              <div>
-                <img src={preview} alt="Image preview" className="image-preview" />
-              </div>
-            )}
-          </div>
-        )}  
-
-      
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <button type="submit">Submit Item</button>
+        <button
+          type="submit"
+          className="item-form-button"
+          disabled={loading}
+        >
+          {loading ? "Submitting..." : "Submit Item"}
+        </button>
       </form>
-    </>
-  )
-}
+
+      {/* Display submission response */}
+      {submittedData && (
+        <div className="item-form-response"><h3>Submitted</h3></div>
+      )}
+
+      {/* Display errors */}
+      {error && (
+        <div className="item-form-error">
+          <p>{error}</p>
+        </div>
+      )}
+    </div>
+  );
+};
 
 export default ItemForm;
