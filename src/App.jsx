@@ -4,20 +4,25 @@ import SignupForm from "./components/SignupForm/SignupForm"
 import SigninForm from "./components/SigninForm/SigninForm"
 import ItemForm from "./components/ItemForm/ItemForm"
 import Dashboard from "./components/Dashboard/Dashboard"
+import capsuleService from "./services/capsuleService"
 import CapsulesList from "./components/CapsulesList/CapsulesList"
+import CapsuleForm from "./components/CapsuleForm/CapsuleForm"
 import EditUser from "./components/EditUser/EditUser"
 import axios from "axios"
 import { Navigate } from "react-router-dom"
 
 const App = () => {
   const [user, setUser] = useState(null)
+  const [capsules, setCapsules] = useState([])
+  const [selectedCapsule, setSelectedCapsule] = useState(null)
+  const [capsuleFormOpen, setCapsuleFormOpen] = useState(false)
 
   useEffect(() => {
     const token = localStorage.getItem("token")
     if (token) {
       axios
         .get(`${import.meta.env.VITE_BACK_END_SERVER_URL}/users/profile`, {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `Bearer ${token}` }
         })
         .then((response) => {
           console.log("Profile fetch response:", response.data)
@@ -44,6 +49,29 @@ const App = () => {
     localStorage.removeItem("token")
   }
 
+  useEffect(() => {
+    const fetchCapsules = async () => {
+      try {
+        const capsuleData = await capsuleService.getCapsules()
+        setCapsules(capsuleData)
+      } catch (error) {
+        console.error("Failed to get capsules", error)
+      }
+    }
+    fetchCapsules()
+  }, [])
+
+  const updateSelectedCapsule = (capsule) => {
+    setSelectedCapsule(capsule)
+  }
+
+  const handleCapsuleFormView = (capsule) => {
+    if (!capsule._id) {
+      setSelectedCapsule(null)
+    }
+    setCapsuleFormOpen(!capsuleFormOpen)
+  }
+
   return (
     <div>
       <Routes>
@@ -68,7 +96,31 @@ const App = () => {
         />
         <Route
           path="/capsules-list/:userId"
-          element={<CapsulesList currentUser={user} />}
+          element={
+            capsuleFormOpen ? (
+              <CapsuleForm
+                currentUser={user}
+                capsules={capsules}
+                setCapsules={setCapsules}
+                selectedCapsule={selectedCapsule}
+                setSelectedCapsule={setSelectedCapsule}
+                updateSelectedCapsule={updateSelectedCapsule}
+                capsuleFormOpen={capsuleFormOpen}
+                setCapsuleFormOpen={setCapsuleFormOpen}
+                handleCapsuleFormView={handleCapsuleFormView}
+              />
+            ) : (
+              <CapsulesList
+                currentUser={user}
+                capsules={capsules}
+                selectedCapsule={selectedCapsule}
+                updateSelectedCapsule={updateSelectedCapsule}
+                capsuleFormOpen={capsuleFormOpen}
+                setCapsuleFormOpen={setCapsuleFormOpen}
+                handleCapsuleFormView={handleCapsuleFormView}
+              />
+            )
+          }
         />
         <Route
           path="/edit-user/:userId"
