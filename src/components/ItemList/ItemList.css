@@ -1,0 +1,87 @@
+/* ItemList.css */
+
+.item-list-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px auto;
+    width: 100%;
+    max-width: 600px;
+    font-family: Arial, sans-serif;
+    background-color: #FAF3E0; /* Match form background */
+    border-radius: 8px;
+    padding: 20px;
+    box-sizing: border-box;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .item-list-heading {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #2C2C54; /* Match heading color */
+    text-align: center;
+  }
+  
+  .item-list {
+    width: 100%;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .item-list-item {
+    padding: 15px;
+    background-color: #FFF8E7; /* Match input background */
+    border: 1px solid #F5A623; /* Match form border */
+    border-radius: 4px;
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .item-list-item:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .item-list-message,
+  .item-list-hyperlink {
+    font-size: 14px;
+    color: #2C2C54; /* Match label color */
+  }
+  
+  .item-list-link {
+    color: #F5A623; /* Match button color */
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .item-list-link:hover {
+    text-decoration: underline;
+  }
+  
+  .item-list-empty {
+    font-size: 16px;
+    color: #777;
+    text-align: center;
+  }
+  
+  .item-list-loading,
+  .item-list-error {
+    font-size: 16px;
+    color: #2C2C54; /* Match label color */
+    text-align: center;
+  }
+  
+  /* Mobile responsiveness */
+  @media (max-width: 768px) {
+    .item-list-container {
+      padding: 15px;
+    }
+  
+    .item-list-heading {
+      font-size: 20px;
+    }
+  }
+  

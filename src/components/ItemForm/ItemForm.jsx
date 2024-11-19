@@ -1,119 +1,147 @@
-import { useState } from 'react';
-import axios from 'axios';
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 import "./ItemForm.css";
 
-const ItemForm = (props) => {
-  const [formData, setFormData] = useState({ type: "", text: "", src: "", altText: "" });
-  const [submittedData, setSubmittedData] = useState(null); 
-  const [error, setError] = useState(null); 
-  const [loading, setLoading] = useState(false); 
+const ItemForm = () => {
+  const { id } = useParams(); 
+  const [formData, setFormData] = useState({
+    type: "",
+    text: "",
+    hyperlink: "",
+    hyperlinkDescription: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (id) {
+      const fetchItem = async () => {
+        try {
+          setLoading(true);
+          const token = localStorage.getItem("token");
+          const response = await axios.get(
+            `${import.meta.env.VITE_BACK_END_SERVER_URL}/items/${id}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          setFormData(response.data); 
+        } catch (err) {
+          console.error("Error fetching item:", err);
+          setError("Failed to load item for editing.");
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchItem();
+    }
+  }, [id]);
 
   const handleChange = (evt) => {
     setFormData({ ...formData, [evt.target.name]: evt.target.value });
   };
 
-  const handleTextChange = (evt) => {
-    const { name, value } = evt.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleSubmitForm = async (evt) => {
+  const handleSubmit = async (evt) => {
     evt.preventDefault();
 
-    setLoading(true);
-    setError(null);
-
     try {
-      const token = localStorage.getItem("token"); 
-      const response = await axios.post(
-        `${import.meta.env.VITE_BACK_END_SERVER_URL}/items`, 
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-     // console.log("Submitted Data:", response.data);
-
-      setSubmittedData(response.data);
-
-      
-      setFormData({ type: "", text: "", altText: "" });
+      const token = localStorage.getItem("token");
+      if (id) {
+        await axios.put(
+          `${import.meta.env.VITE_BACK_END_SERVER_URL}/items/${id}`,
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+      } else {
+        // Create new item
+        await axios.post(
+          `${import.meta.env.VITE_BACK_END_SERVER_URL}/items`,
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+      }
+      window.location.href = "/itemlist"; 
     } catch (err) {
-      console.error("Error submitting form:", err);
-      setError("Failed to submit. Please try again.");
-    } finally {
-      setLoading(false);
+      console.error("Error saving item:", err);
+      setError("Failed to save item. Please try again.");
     }
   };
 
+  if (loading) {
+    return <div className="item-form-loading">Loading item...</div>;
+  }
+
+  if (error) {
+    return <div className="item-form-error">{error}</div>;
+  }
+
   return (
     <div className="item-form-container">
-      <h2 className="item-form-heading">Submit Your Item</h2>
-      <form className="item-form" onSubmit={handleSubmitForm}>
-        <div className="checkbox-group">
-          <label htmlFor="text">
-            <input
-              type="checkbox"
-              id="text"
-              name="type"
-              value="text"
-              className="item-form-checkbox"
-              checked={formData.type === "text"}
-              onChange={handleChange}
-            />
-            Text
-          </label>
-          <label htmlFor="image">
-            <input
-              type="checkbox"
-              id="image"
-              name="type"
-              value="image"
-              className="item-form-checkbox"
-              checked={formData.type === "image"}
-              onChange={handleChange}
-            />
-            Image
-          </label>
+      <h2 className="item-form-heading">
+        {id ? "Edit Item" : "Create Item"}
+      </h2>
+      <form className="item-form" onSubmit={handleSubmit}>
+        <div className="item-form-section">
+          <label className="item-form-label">Type</label>
+          <select
+            name="type"
+            value={formData.type}
+            onChange={handleChange}
+            className="item-form-input"
+          >
+            <option value="message">Message</option>
+            <option value="hyperlink">Hyperlink</option>
+          </select>
         </div>
-
-        {/* Message Textbox */}
-        {formData.type === "text" && (
+        {formData.type === "message" && (
           <div className="item-form-section">
             <label className="item-form-label">Message</label>
             <textarea
               name="text"
-              placeholder="Enter your message"
               value={formData.text}
-              onChange={handleTextChange}
+              onChange={handleChange}
               className="item-form-textarea"
+              placeholder="Enter your message"
             />
           </div>
         )}
-
-        <button
-          type="submit"
-          className="item-form-button"
-          disabled={loading}
-        >
-          {loading ? "Submitting..." : "Submit Item"}
+        {formData.type === "hyperlink" && (
+          <div className="item-form-section">
+            <label className="item-form-label">Hyperlink</label>
+            <input
+              type="url"
+              name="hyperlink"
+              value={formData.hyperlink}
+              onChange={handleChange}
+              className="item-form-input"
+              placeholder="Enter a URL"
+            />
+            <label className="item-form-label">Description</label>
+            <textarea
+              name="hyperlinkDescription"
+              value={formData.hyperlinkDescription}
+              onChange={handleChange}
+              className="item-form-textarea"
+              placeholder="Enter a description"
+            />
+          </div>
+        )}
+        <button type="submit" className="item-form-button">
+          {id ? "Update Item" : "Create Item"}
         </button>
       </form>
-
-      {/* Display submission response */}
-      {submittedData && (
-        <div className="item-form-response"><h3>Submitted</h3></div>
-      )}
-
-      {/* Display errors */}
-      {error && (
-        <div className="item-form-error">
-          <p>{error}</p>
-        </div>
-      )}
     </div>
   );
 };
