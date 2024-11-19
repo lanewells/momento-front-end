@@ -7,6 +7,7 @@ import Dashboard from "./components/Dashboard/Dashboard"
 import capsuleService from "./services/capsuleService"
 import CapsulesList from "./components/CapsulesList/CapsulesList"
 import CapsuleForm from "./components/CapsuleForm/CapsuleForm"
+import CapsuleDetail from "./components/CapsuleDetail/CapsuleDetail"
 import EditUser from "./components/EditUser/EditUser"
 import axios from "axios"
 import { Navigate } from "react-router-dom"
@@ -120,6 +121,19 @@ const App = () => {
                 handleCapsuleFormView={handleCapsuleFormView}
               />
             )
+          }
+        />
+        <Route
+          path="/capsule-detail/:capsuleId"
+          element={
+            <CapsuleDetail
+              capsules={capsules}
+              selectedCapsule={selectedCapsule}
+              setSelectedCapsule={setSelectedCapsule}
+              setCapsules={setCapsules}
+              setCapsuleFormOpen={setCapsuleFormOpen}
+              handleCapsuleFormView={handleCapsuleFormView}
+            />
           }
         />
         <Route
