@@ -1,41 +1,26 @@
 import { useState, useEffect } from "react"
 import capsuleService from "../../services/capsuleService"
 
-const CapsulesList = (props) => {
-  const [capsules, setCapsules] = useState([])
+const CapsulesList = ({
+  currentUser,
+  capsules,
+  selectedCapsule,
+  updateSelectedCapsule,
+  capsuleFormOpen,
+  handleCapsuleFormView
+}) => {
   const [selectedType, setSelectedType] = useState("outgoing")
-  const [selectedCapsule, setSelectedCapsule] = useState(null)
 
-  useEffect(() => {
-    const fetchCapsules = async () => {
-      try {
-        const capsuleData = await capsuleService.getCapsules()
-        setCapsules(capsuleData)
-      } catch (error) {
-        setError("Failed to get capsules")
-      }
-    }
-    fetchCapsules()
-  }, [])
+  const handleTypeChange = (evt) => setSelectedType(evt.target.value)
 
-  const updateSelectedCapsule = (capsule) => {
-    setSelectedCapsule(capsule)
-  }
-
-  const handleTypeChange = (e) => setSelectedType(e.target.value)
-
-  // TODO: pass props  4.function attached to Create button
-  // TODO: updateSelectedCapsuleFunction
   // TODO: replace capsule.recipient (currently id only) with recipient's username (in map)
   // TODO: function for "Create" button that creates a new capsule (routes to capsule form component)
 
-  //   console.log("Props.currentUser:", props.currentUser
-
   const capsulesOutgoingFiltered = capsules.filter(
-    (capsule) => capsule.sender === props.currentUser._id
+    (capsule) => capsule.sender === currentUser._id
   )
   const capsulesIncomingFiltered = capsules.filter(
-    (capsule) => capsule.recipient === props.currentUser._id
+    (capsule) => capsule.recipient === currentUser._id
   )
   const capsulesOutgoing = capsulesOutgoingFiltered.map((capsule) => (
     <a key={capsule._id} onClick={() => updateSelectedCapsule(capsule)}>
@@ -53,7 +38,7 @@ const CapsulesList = (props) => {
   ))
 
   const capsulesIncoming = capsulesIncomingFiltered.map((capsule) => (
-    <a key={capsule._id} onClick={() => props.updateSelectedCapsule(capsule)}>
+    <a key={capsule._id} onClick={() => updateSelectedCapsule(capsule)}>
       <li>
         <img src="../assets/capsule_icon.jpg" alt="Capsule icon" />
         <div>
@@ -73,7 +58,7 @@ const CapsulesList = (props) => {
   return (
     <div>
       <h1>My Capsules</h1>
-      <button>Create</button>
+      <button onClick={handleCapsuleFormView}>Create</button>
 
       <div className="radio-buttons">
         <label htmlFor="outgoing">Outgoing</label>
