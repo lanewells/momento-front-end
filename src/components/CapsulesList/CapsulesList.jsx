@@ -1,16 +1,44 @@
-const CapsulesList = (props) => {
-  const [selectedType, setSelectedType] = useState("outgoing")
-  //TODO: pass props 1.updateSelected 2.capsulesList 3.currentUser 4.function attached to Create button
-  const capsulesOutgoing = props.capsulesList.filter(
-    (capsule) => capsule.sender === currentUser
-  ) //TODO: define currentUser
-  const capsulesIncoming = props.capsulesList.filter(
-    (capsule) => capsule.recipient === currentUser
-  )
+import { useState, useEffect } from "react"
+import capsuleService from "../../services/capsuleService"
 
-  const capsulesOutgoingList = capsulesOutgoing.map((capsule) => (
-    <a key={capsule._id} onClick={() => props.updateSelected(capsule)}>
-      //TODO: updateSelectedFunction
+const CapsulesList = (props) => {
+  const [capsules, setCapsules] = useState([])
+  const [selectedType, setSelectedType] = useState("outgoing")
+  const [selectedCapsule, setSelectedCapsule] = useState(null)
+
+  useEffect(() => {
+    const fetchCapsules = async () => {
+      try {
+        const capsuleData = await capsuleService.getCapsules()
+        setCapsules(capsuleData)
+      } catch (error) {
+        setError("Failed to get capsules")
+      }
+    }
+    fetchCapsules()
+  }, [])
+
+  const updateSelectedCapsule = (capsule) => {
+    setSelectedCapsule(capsule)
+  }
+
+  const handleTypeChange = (e) => setSelectedType(e.target.value)
+
+  // TODO: pass props  4.function attached to Create button
+  // TODO: updateSelectedCapsuleFunction
+  // TODO: replace capsule.recipient (currently id only) with recipient's username (in map)
+  // TODO: function for "Create" button that creates a new capsule (routes to capsule form component)
+
+  //   console.log("Props.currentUser:", props.currentUser
+
+  const capsulesOutgoingFiltered = capsules.filter(
+    (capsule) => capsule.sender === props.currentUser._id
+  )
+  const capsulesIncomingFiltered = capsules.filter(
+    (capsule) => capsule.recipient === props.currentUser._id
+  )
+  const capsulesOutgoing = capsulesOutgoingFiltered.map((capsule) => (
+    <a key={capsule._id} onClick={() => updateSelectedCapsule(capsule)}>
       <li>
         <img src="../assets/capsule_icon.jpg" alt="Capsule icon" />
         <div>
@@ -24,8 +52,8 @@ const CapsulesList = (props) => {
     </a>
   ))
 
-  const capsulesIncomingList = capsulesIncoming.map((capsule) => (
-    <a key={capsule._id} onClick={() => props.updateSelected(capsule)}>
+  const capsulesIncoming = capsulesIncomingFiltered.map((capsule) => (
+    <a key={capsule._id} onClick={() => props.updateSelectedCapsule(capsule)}>
       <li>
         <img src="../assets/capsule_icon.jpg" alt="Capsule icon" />
         <div>
@@ -40,15 +68,13 @@ const CapsulesList = (props) => {
   ))
 
   const currentList =
-    selectedType === "outgoing" ? capsulesOutgoingList : capsulesIncomingList
-
-  const handleTypeChange = (e) => setSelectedType(e.target.value)
+    selectedType === "outgoing" ? capsulesOutgoing : capsulesIncoming
 
   return (
     <div>
       <h1>My Capsules</h1>
-      <button>Create</button> //TODO: function for "Create" button that creates
-      a new capsule (routes to capsule form component)
+      <button>Create</button>
+
       <div className="radio-buttons">
         <label htmlFor="outgoing">Outgoing</label>
         <input
@@ -69,7 +95,7 @@ const CapsulesList = (props) => {
           onChange={handleTypeChange}
         />
       </div>
-      {!props.currentList.length ? (
+      {!currentList.length ? (
         <h3>
           You don't have any {selectedType} capsules yet. Create a new capsule
           to get started!
