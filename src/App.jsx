@@ -66,7 +66,10 @@ const App = () => {
           path="/signin"
           element={<SigninForm onSignin={handleSignin} />}
         />
-        <Route path="/capsules-list/:userId" element={<CapsulesList />} />
+        <Route
+          path="/capsules-list/:userId"
+          element={<CapsulesList currentUser={user} />}
+        />
         <Route
           path="/edit-user/:userId"
           element={<EditUser user={user} onUserUpdate={setUser} />}
