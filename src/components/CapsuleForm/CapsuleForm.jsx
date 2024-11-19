@@ -88,49 +88,55 @@ const CapsuleForm = ({
   }
 
   return (
-    <form onSubmit={handleSubmitForm}>
-      <label htmlFor="sender">Sender</label>
-      <input id="sender" name="sender" value={formData.sender} readOnly />
+    <>
+      <h1>
+        {selectedCapsule ? "Edit Existing Capsule" : "Create a New Capsule"}
+      </h1>
+      <form onSubmit={handleSubmitForm}>
+        <label htmlFor="sender">Sender</label>
+        <input id="sender" name="sender" value={formData.sender} readOnly />
 
-      <label htmlFor="recipient">Recipient</label>
-      <input
-        id="recipient"
-        name="recipient"
-        value={formData.recipient}
-        onChange={handleChange}
-      />
+        <label htmlFor="recipient">Recipient</label>
+        <input
+          id="recipient"
+          name="recipient"
+          value={formData.recipient}
+          onChange={handleChange}
+        />
 
-      <label htmlFor="sealDate">Seal Date *Optional*</label>
-      <input
-        id="sealDate"
-        name="sealDate"
-        type="date"
-        value={formData.sealDate}
-        onChange={handleChange}
-      />
+        <label htmlFor="sealDate">Seal Date *Optional*</label>
+        <input
+          id="sealDate"
+          name="sealDate"
+          type="date"
+          value={formData.sealDate}
+          onChange={handleChange}
+        />
 
-      <label htmlFor="releaseDate">Release Date</label>
-      <input
-        id="releaseDate"
-        name="releaseDate"
-        type="date"
-        value={formData.releaseDate}
-        onChange={handleChange}
-        //required
-      />
+        <label htmlFor="releaseDate">Release Date</label>
+        <input
+          id="releaseDate"
+          name="releaseDate"
+          type="date"
+          value={formData.releaseDate}
+          onChange={handleChange}
+        />
 
-      <label htmlFor="items">Items In Capsule</label>
-      <input
-        id="items"
-        name="items"
-        value={formData.items ? formData.items.join(",") : ""}
-        onChange={(evt) =>
-          setFormData({ ...formData, items: evt.target.value.split(",") })
-        }
-      />
+        <label htmlFor="items">Items In Capsule</label>
+        <input
+          id="items"
+          name="items"
+          value={formData.items ? formData.items.join(",") : ""}
+          onChange={(evt) =>
+            setFormData({ ...formData, items: evt.target.value.split(",") })
+          }
+        />
 
-      <button type="submit">Save</button>
-    </form>
+        <button type="submit">
+          {selectedCapsule ? "Save Changes" : "Save New Capsule"}
+        </button>
+      </form>
+    </>
   )
 }
 

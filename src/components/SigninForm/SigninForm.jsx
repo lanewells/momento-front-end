@@ -39,6 +39,10 @@ const SigninForm = ({ onSignin }) => {
     }
   }
 
+  const handleSignupRedirect = () => {
+    navigate("/signup")
+  }
+
   return (
     <div className="signin-form">
       <h2>Signin</h2>
@@ -70,6 +74,9 @@ const SigninForm = ({ onSignin }) => {
           Signin
         </button>
       </form>
+      <button onClick={handleSignupRedirect} className="signup-redirect-button">
+        Don't have an account? Sign up!
+      </button>
     </div>
   )
 }
