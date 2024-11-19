@@ -46,7 +46,10 @@ const Dashboard = ({ user, handleLogout }) => {
         </button>  
         <button onClick={() => navigate("/itemForm")}>
           ItemForm
-        </button>    
+        </button> 
+        <button onClick={() => navigate("/itemList")}>
+          ItemList
+        </button>   
         <button onClick={handleEditAccount}>Edit Account</button>
         <button onClick={handleDeleteAccount}>Delete Account</button>
         <button onClick={handleLogout}>Logout</button>
