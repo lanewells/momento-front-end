@@ -43,10 +43,8 @@ const Dashboard = ({ user, handleLogout }) => {
         </button>
         <button onClick={() => navigate(`/capsules-list/${user.id}`)}>
           View Your Capsules
-        </button>  
-        <button onClick={() => navigate("/itemForm")}>
-          ItemForm
-        </button>    
+        </button>
+        <button onClick={() => navigate("/itemForm")}>ItemForm</button>
         <button onClick={handleEditAccount}>Edit Account</button>
         <button onClick={handleDeleteAccount}>Delete Account</button>
         <button onClick={handleLogout}>Logout</button>
