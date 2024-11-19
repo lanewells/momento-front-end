@@ -5,7 +5,7 @@ const Dashboard = ({ user, handleLogout }) => {
   const navigate = useNavigate()
 
   const handleEditAccount = () => {
-    navigate(`/edit-account/${user.id}`)
+    navigate(`/edit-user/${user.id}`)
   }
 
   const handleDeleteAccount = async () => {
@@ -41,7 +41,7 @@ const Dashboard = ({ user, handleLogout }) => {
         <button onClick={() => navigate("/create-capsule")}>
           Create a Capsule
         </button>
-        <button onClick={() => navigate(`/view-capsules/${user.id}`)}>
+        <button onClick={() => navigate(`/capsules-list/${user.id}`)}>
           View Your Capsules
         </button>
         <button onClick={handleEditAccount}>Edit Account</button>
