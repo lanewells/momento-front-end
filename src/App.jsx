@@ -5,6 +5,7 @@ import SigninForm from "./components/SigninForm/SigninForm"
 import ItemForm from "./components/ItemForm/ItemForm"
 import Dashboard from "./components/Dashboard/Dashboard"
 import CapsulesList from "./components/CapsulesList/CapsulesList"
+import EditUser from "./components/EditUser/EditUser"
 import axios from "axios"
 import { Navigate } from "react-router-dom"
 
@@ -16,7 +17,7 @@ const App = () => {
     if (token) {
       axios
         .get(`${import.meta.env.VITE_BACK_END_SERVER_URL}/users/profile`, {
-          headers: { Authorization: `Bearer ${token}` }
+          headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
           console.log("Profile fetch response:", response.data)
@@ -68,6 +69,10 @@ const App = () => {
         <Route
           path="/capsules-list/:userId"
           element={<CapsulesList currentUser={user} />}
+        />
+        <Route
+          path="/edit-user/:userId"
+          element={<EditUser user={user} onUserUpdate={setUser} />}
         />
       </Routes>
     </div>
