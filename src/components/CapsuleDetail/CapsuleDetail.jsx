@@ -1,7 +1,5 @@
 import { useState } from "react"
 import capsuleService from "../../services/capsuleService"
-import { Routes, Route } from "react-router-dom"
-import { Navigate } from "react-router-dom"
 
 const CapsuleDetail = ({
   selectedCapsule,
@@ -38,6 +36,7 @@ const CapsuleDetail = ({
   return (
     <div>
       <h1>Capsule Details</h1>
+      <img src="../assets/capsule_icon.jpg" />
       <h3>
         {selectedCapsule.recipient === selectedCapsule.sender
           ? "To My Future Self"
@@ -48,11 +47,21 @@ const CapsuleDetail = ({
           ? "From Me"
           : `From ${selectedCapsule.sender}`}
       </h3>
+      <div>
+        <ItemsList capsule={selectedCapsule} />
+      </div>
+      {selectedCapsule.items.length < 1 ? (
+        <button onClick={() => navigate("/item-form")}>
+          Create First Item
+        </button>
+      ) : (
+        <button onClick={() => navigate("/item-form")}>Add Another Item</button>
+      )}
       <h3>Release date {selectedCapsule.releaseDate}</h3>
       {selectedCapsule.sealDate ? (
         <h3>Seal date {selectedCapsule.sealDate}</h3>
       ) : (
-        ""
+        <button>SEAL CAPSULE</button>
       )}
 
       <button onClick={() => handleCapsuleFormView(selectedCapsule)}>
@@ -61,8 +70,6 @@ const CapsuleDetail = ({
       <button onClick={() => handleDeleteCapsule(selectedCapsule._id)}>
         Delete Capsule
       </button>
-
-      {/* <button onClick={() => directToItemForm()}>Add New Item</button> */}
     </div>
   )
 }
