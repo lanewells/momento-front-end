@@ -49,24 +49,18 @@ const CapsuleDetail = ({
           : `From ${selectedCapsule.sender}`}
       </h3>
       <div>
-        <ItemList capsuleId={selectedCapsule.id} />
+        <ItemList capsuleId={selectedCapsule._id} />
       </div>
-      {selectedCapsule.items.length < 1 ? (
-        <button onClick={() => navigate("/item-form")}>
-          Create First Item
-        </button>
-      ) : (
-        <button onClick={() => navigate("/item-form")}>Add Another Item</button>
-      )}
-      <h3>Release date {selectedCapsule.releaseDate}</h3>
+      <h3>Release Date: {selectedCapsule.releaseDate}</h3>
       {selectedCapsule.sealDate ? (
-        <h3>Seal date {selectedCapsule.sealDate}</h3>
+        <h3>Lock Date: {selectedCapsule.sealDate}</h3>
       ) : (
-        <button>SEAL CAPSULE</button>
+        <div>
+          <button>Lock Capsule</button>
+        </div>
       )}
-
       <button onClick={() => handleCapsuleFormView(selectedCapsule)}>
-        Edit Capsule
+        Edit Capsule Details
       </button>
       <button onClick={() => handleDeleteCapsule(selectedCapsule._id)}>
         Delete Capsule
