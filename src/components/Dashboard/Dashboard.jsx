@@ -45,6 +45,9 @@ const Dashboard = ({ user, handleLogout }) => {
           View Your Capsules
         </button>
         <button onClick={() => navigate("/itemForm")}>ItemForm</button>
+        <button onClick={() => navigate("/notifications")}>
+          View Notifications
+        </button>
         <button onClick={() => navigate(`/profile/${user.id}`)}>
           View Profile
         </button>
