@@ -4,9 +4,9 @@ import axios from "axios";
 import "./ItemForm.css";
 
 const ItemForm = () => {
-  const { id } = useParams(); 
+  const { id } = useParams();
   const [formData, setFormData] = useState({
-    type: "",
+    type: "message",
     text: "",
     hyperlink: "",
     hyperlinkDescription: "",
@@ -28,7 +28,7 @@ const ItemForm = () => {
               },
             }
           );
-          setFormData(response.data); 
+          setFormData(response.data);
         } catch (err) {
           console.error("Error fetching item:", err);
           setError("Failed to load item for editing.");
@@ -47,9 +47,24 @@ const ItemForm = () => {
 
   const handleSubmit = async (evt) => {
     evt.preventDefault();
-
+  
+    if (formData.type === "message" && !formData.text.trim()) {
+      alert("Please enter a message.");
+      return;
+    }
+  
+    if (formData.type === "hyperlink") {
+      if (!formData.hyperlink.trim()) {
+        alert("Please enter a hyperlink.");
+        return;
+      }
+      if (!formData.hyperlinkDescription.trim()) {
+        alert("Please enter a description for the hyperlink.");
+        return;
+      }
+    }
     try {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("token")
       if (id) {
         await axios.put(
           `${import.meta.env.VITE_BACK_END_SERVER_URL}/items/${id}`,
@@ -61,7 +76,6 @@ const ItemForm = () => {
           }
         );
       } else {
-        // Create new item
         await axios.post(
           `${import.meta.env.VITE_BACK_END_SERVER_URL}/items`,
           formData,
@@ -72,12 +86,12 @@ const ItemForm = () => {
           }
         );
       }
-      window.location.href = "/itemlist"; 
+      window.location.href = "/itemlist";
     } catch (err) {
       console.error("Error saving item:", err);
       setError("Failed to save item. Please try again.");
     }
-  };
+  }
 
   if (loading) {
     return <div className="item-form-loading">Loading item...</div>;
@@ -95,15 +109,30 @@ const ItemForm = () => {
       <form className="item-form" onSubmit={handleSubmit}>
         <div className="item-form-section">
           <label className="item-form-label">Type</label>
-          <select
-            name="type"
-            value={formData.type}
-            onChange={handleChange}
-            className="item-form-input"
-          >
-            <option value="message">Message</option>
-            <option value="hyperlink">Hyperlink</option>
-          </select>
+          <ul className="item-form-type-list">
+            <li>
+              <input
+                type="radio"
+                id="message"
+                name="type"
+                value="message"
+                checked={formData.type === "message"}
+                onChange={handleChange}
+              />
+              <label htmlFor="message">Message</label>
+            </li>
+            <li>
+              <input
+                type="radio"
+                id="hyperlink"
+                name="type"
+                value="hyperlink"
+                checked={formData.type === "hyperlink"}
+                onChange={handleChange}
+              />
+              <label htmlFor="hyperlink">Hyperlink</label>
+            </li>
+          </ul>
         </div>
         {formData.type === "message" && (
           <div className="item-form-section">

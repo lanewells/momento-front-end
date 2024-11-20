@@ -78,134 +78,49 @@
   background-color: #CC8600; 
 }
 
-.item-form-response {
-  margin-top: 20px;
-  font-size: 14px;
+.item-form-loading {
   text-align: center;
-  color: #2C2C54; 
-}
-
-.checkbox-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px; 
-}
-
-.item-form-checkbox {
-  margin-right: 5px; 
-}
-
-.item-form-label {
-  font-weight: bold;
-  margin-bottom: 10px;
-  color: #2C2C54; 
-}
-
-.app-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #F5A623; 
-  border-bottom: solid 4px #001f3d;
-  padding: 10px 20px;
-  color: #001f3d; 
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.app-logo {
-  font-size: 24px;
-  font-weight: bold;
-}
-
-.app-menu ul {
-  list-style: none;
-  display: flex;
-  gap: 15px;
-  margin: 0;
-  padding: 0;
-}
-
-.app-menu li a {
-  text-decoration: none;
-  color: #FAF3E0; 
+  color: #2C2C54;
   font-size: 16px;
 }
 
-.app-menu li a:hover {
-  text-decoration: underline;
+.item-form-error {
+  text-align: center;
+  color: red;
+  font-size: 16px;
 }
 
-body {
-  display: block !important;
-  place-items:inherit !important;
-}
-
-
-.radio-group {
+.item-form-type-list {
   display: flex;
-  gap: 10px;
-  margin-bottom: 10px;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0;
+  padding: 0;
+  list-style: none; 
 }
 
-.radio-group label {
+.item-form-type-list li {
+  margin-bottom: 0; 
+  display: flex;
+  align-items: center; 
+}
+
+.item-form-type-list input[type="radio"] {
+  margin-right: 5px; 
+}
+
+.item-form-type-list label {
   font-size: 14px;
   color: #2C2C54;
 }
 
-.radio-group input {
-  margin-right: 5px;
-}
-
-.item-form-section {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.item-form-label {
-  font-size: 14px;
-  font-weight: bold;
-  color: #2C2C54; 
-}
-
-.item-form-input,
-.item-form-textarea {
-  padding: 10px;
-  border: 1px solid #F5A623; 
-  border-radius: 4px;
-  font-size: 14px;
-  background-color: #FFF8E7; 
-  color: #2C2C54; 
-  width: 100%; 
-  box-sizing: border-box; 
-}
-
-.item-form-textarea {
-  resize: none;
-  height: 80px;
-}
-
-.item-form-button:disabled {
-  background-color: #F5A62399; 
-  cursor: not-allowed;
-}
-
 /* Mobile responsiveness */
 @media (max-width: 768px) {
-  .app-menu ul {
-    flex-direction: column;
-    gap: 10px;
-  }
-
   .item-form-container {
     padding: 15px;
   }
 
   .item-form-heading {
     font-size: 20px;
-  }
-  .image-preview {
-    width: 95%;
   }
 }
