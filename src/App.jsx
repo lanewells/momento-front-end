@@ -27,7 +27,7 @@ const App = () => {
     if (token) {
       axios
         .get(`${import.meta.env.VITE_BACK_END_SERVER_URL}/users/profile`, {
-          headers: { Authorization: `Bearer ${token}` }
+          headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
           console.log("Profile fetch response:", response.data)
@@ -153,13 +153,24 @@ const App = () => {
           <Route
             path="/capsule-detail/:capsuleId"
             element={
-              <CapsuleDetail
-                selectedCapsule={selectedCapsule}
-                setSelectedCapsule={setSelectedCapsule}
-                setCapsules={setCapsules}
-                setCapsuleFormOpen={setCapsuleFormOpen}
-                handleCapsuleFormView={handleCapsuleFormView}
-              />
+              capsuleFormOpen ? (
+                <CapsuleForm
+                  currentUser={user}
+                  capsules={capsules}
+                  setCapsules={setCapsules}
+                  selectedCapsule={selectedCapsule}
+                  setSelectedCapsule={setSelectedCapsule}
+                  setCapsuleFormOpen={setCapsuleFormOpen}
+                />
+              ) : (
+                <CapsuleDetail
+                  selectedCapsule={selectedCapsule}
+                  setSelectedCapsule={setSelectedCapsule}
+                  setCapsules={setCapsules}
+                  setCapsuleFormOpen={setCapsuleFormOpen}
+                  handleCapsuleFormView={handleCapsuleFormView}
+                />
+              )
             }
           />
           <Route
