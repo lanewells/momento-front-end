@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom"
 import SignupForm from "./components/SignupForm/SignupForm"
 import SigninForm from "./components/SigninForm/SigninForm"
 import ItemForm from "./components/ItemForm/ItemForm"
-import ItemList from "./components/ItemList/ItemList";
+import ItemList from "./components/ItemList/ItemList"
 import Dashboard from "./components/Dashboard/Dashboard"
 import capsuleService from "./services/capsuleService"
 import CapsulesList from "./components/CapsulesList/CapsulesList"
