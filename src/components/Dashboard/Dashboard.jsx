@@ -52,6 +52,7 @@ const Dashboard = ({ user, handleLogout }) => {
         <button onClick={() => navigate(`/profile/${user.id}`)}>
           View Profile
         </button>
+        
         <button onClick={handleEditAccount}>Edit Account</button>
         <button onClick={handleDeleteAccount}>Delete Account</button>
         <button onClick={handleLogout}>Logout</button>
