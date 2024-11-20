@@ -71,9 +71,10 @@ const App = () => {
   }
 
   const handleCapsuleFormView = (capsule) => {
-    if (!capsule.id) {
+    if (!capsule._id) {
       setSelectedCapsule(null)
     }
+    console.log("Capsule id into form:", capsule._id)
     setCapsuleFormOpen(!capsuleFormOpen)
   }
 
