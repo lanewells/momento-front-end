@@ -128,14 +128,4 @@
     background-color: #B71C1C;
   }
   
-  /* Mobile responsiveness */
-  @media (max-width: 768px) {
-    .item-list-container {
-      padding: 15px;
-    }
-  
-    .item-list-heading {
-      font-size: 20px;
-    }
-  }
   
