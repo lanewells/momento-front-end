@@ -11,7 +11,6 @@ const MasterPage = () => {
   return (
     <div className="master-page-container">
       <header>
-        {/* TopNav component */}
         <div className="mobile-container">
           <div className="topnav">
             <a href="#home" className="active">
