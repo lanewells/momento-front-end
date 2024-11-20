@@ -44,6 +44,10 @@ const EditUser = ({ user, onUserUpdate }) => {
     }
   }
 
+  const handleCancel = () => {
+    navigate("/dashboard")
+  }
+
   return (
     <div>
       <h2>Edit Account</h2>
@@ -72,6 +76,9 @@ const EditUser = ({ user, onUserUpdate }) => {
           />
         </div>
         <button type="submit">Update</button>
+        <button type="button" onClick={handleCancel}>
+          Cancel
+        </button>
       </form>
     </div>
   )
