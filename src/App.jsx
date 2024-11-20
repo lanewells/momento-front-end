@@ -11,6 +11,7 @@ import CapsuleForm from "./components/CapsuleForm/CapsuleForm"
 import CapsuleDetail from "./components/CapsuleDetail/CapsuleDetail"
 import EditUser from "./components/EditUser/EditUser"
 import Profile from "./components/Profile/Profile"
+import NotificationWindow from "./components/NotificationWindow/NotificationWindow"
 import axios from "axios"
 import { Navigate } from "react-router-dom"
 
@@ -153,6 +154,16 @@ const App = () => {
           element={
             user ? (
               <Dashboard user={user} handleLogout={handleLogout} />
+            ) : (
+              <Navigate to="/signin" />
+            )
+          }
+        />
+        <Route
+          path="/notifications"
+          element={
+            user ? (
+              <NotificationWindow user={user} />
             ) : (
               <Navigate to="/signin" />
             )
