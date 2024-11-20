@@ -12,21 +12,24 @@ const CapsuleForm = ({
   setCapsuleFormOpen,
   handleCapsuleFormView
 }) => {
+  // const currentUsername = currentUser.username
   const initialState = {
-    sender: currentUser._id,
-    recipient: currentUser._id || "",
+    sender: currentUser.id,
+    recipient: "",
     sealDate: "",
     releaseDate: "",
     status: "",
     items: []
   }
+  console.log("Current user id:", currentUser.id)
+  console.log("Current username:", currentUser.username)
 
   const [formData, setFormData] = useState(
     selectedCapsule ? selectedCapsule : initialState
   )
 
   const handleChange = (evt) => {
-    setFormData({ ...formData, [evt.target.value]: evt.target.value })
+    setFormData({ ...formData, [evt.target.name]: evt.target.value })
   }
 
   const handleAddCapsule = async (formData) => {
@@ -59,7 +62,7 @@ const CapsuleForm = ({
 
       setCapsules((prevCapsules) =>
         prevCapsules.map((capsule) =>
-          capsule._id === id ? updatedCapsule : capsule
+          capsule.id === id ? updatedCapsule : capsule
         )
       )
 
@@ -71,19 +74,37 @@ const CapsuleForm = ({
     }
   }
 
-  const handleSubmitForm = (evt) => {
+  const handleSubmitForm = async (evt) => {
     evt.preventDefault()
+
     if (!formData.releaseDate) {
       alert(
         "Please select a release date for your capsule. Don't worry, you can change it later!"
       )
-    } else {
+      return
+    }
+
+    const formattedData = {
+      ...formData,
+      sealDate: formData.sealDate
+        ? new Date(formData.sealDate).toISOString()
+        : null,
+      releaseDate: formData.releaseDate
+        ? new Date(formData.releaseDate).toISOString()
+        : null,
+      status: "pending seal"
+    }
+
+    try {
       if (selectedCapsule) {
-        handleUpdateCapsule(formData._id, formData)
+        await handleUpdateCapsule(formattedData.id, formattedData)
       } else {
-        handleAddCapsule(formData)
+        await handleAddCapsule(formattedData)
       }
       setFormData(initialState)
+    } catch (error) {
+      console.error("Error submitting create capsule form:", error)
+      alert("Womp, womp. Something went wrong. Please try again!")
     }
   }
 
@@ -94,13 +115,19 @@ const CapsuleForm = ({
       </h1>
       <form onSubmit={handleSubmitForm}>
         <label htmlFor="sender">Sender</label>
-        <input id="sender" name="sender" value={formData.sender} readOnly />
+        <input
+          id="sender"
+          name="sender"
+          value={formData.sender || currentUser.id}
+          readOnly
+        />
 
         <label htmlFor="recipient">Recipient</label>
         <input
           id="recipient"
           name="recipient"
-          value={formData.recipient}
+          type="text"
+          value={formData.recipient || ""}
           onChange={handleChange}
         />
 
@@ -109,7 +136,7 @@ const CapsuleForm = ({
           id="sealDate"
           name="sealDate"
           type="date"
-          value={formData.sealDate}
+          value={formData.sealDate || ""}
           onChange={handleChange}
         />
 
@@ -126,7 +153,7 @@ const CapsuleForm = ({
         <input
           id="items"
           name="items"
-          value={formData.items ? formData.items.join(",") : ""}
+          value={formData.items ? formData.items.join(",") : []}
           onChange={(evt) =>
             setFormData({ ...formData, items: evt.target.value.split(",") })
           }
