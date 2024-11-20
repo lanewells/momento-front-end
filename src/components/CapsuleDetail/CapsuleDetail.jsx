@@ -1,5 +1,6 @@
 import { useState } from "react"
 import capsuleService from "../../services/capsuleService"
+import ItemList from "../ItemList/ItemList.jsx"
 
 const CapsuleDetail = ({
   selectedCapsule,
@@ -48,7 +49,7 @@ const CapsuleDetail = ({
           : `From ${selectedCapsule.sender}`}
       </h3>
       <div>
-        <ItemsList capsule={selectedCapsule} />
+        <ItemList capsuleId={selectedCapsule.id} />
       </div>
       {selectedCapsule.items.length < 1 ? (
         <button onClick={() => navigate("/item-form")}>
