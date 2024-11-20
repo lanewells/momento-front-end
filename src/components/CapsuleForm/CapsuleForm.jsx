@@ -7,12 +7,8 @@ const CapsuleForm = ({
   setCapsules,
   selectedCapsule,
   setSelectedCapsule,
-  updateSelectedCapsule,
-  capsuleFormOpen,
-  setCapsuleFormOpen,
-  handleCapsuleFormView
+  setCapsuleFormOpen
 }) => {
-  // const currentUsername = currentUser.username
   const initialState = {
     sender: currentUser.id,
     recipient: "",

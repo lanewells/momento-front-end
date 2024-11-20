@@ -20,13 +20,14 @@ const App = () => {
   const [capsules, setCapsules] = useState([])
   const [selectedCapsule, setSelectedCapsule] = useState(null)
   const [capsuleFormOpen, setCapsuleFormOpen] = useState(false)
+  const [openDetails, setOpenDetails] = useState(false)
 
   useEffect(() => {
     const token = localStorage.getItem("token")
     if (token) {
       axios
         .get(`${import.meta.env.VITE_BACK_END_SERVER_URL}/users/profile`, {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `Bearer ${token}` }
         })
         .then((response) => {
           console.log("Profile fetch response:", response.data)
@@ -70,23 +71,60 @@ const App = () => {
   }
 
   const handleCapsuleFormView = (capsule) => {
-    if (!capsule._id) {
+    if (!capsule.id) {
       setSelectedCapsule(null)
     }
     setCapsuleFormOpen(!capsuleFormOpen)
+  }
+
+  const openDetailsPage = (capsule) => {
+    if (capsule._id) {
+      console.log("Capsule id:", capsule._id)
+      console.log("Capsule:", capsule)
+      updateSelectedCapsule(capsule)
+      setOpenDetails(!openDetails)
+    } else {
+      console.log("Capsule id:", capsule._id)
+      console.log("Capsule:", capsule)
+      console.log("Error opening details page. No capsule id")
+    }
   }
 
   return (
     <>
       <Routes>
         <Route path="/" element={<MasterPage />}>
-          <Route index element={ user ? ( <Dashboard user={user} handleLogout={handleLogout} />) : (<Navigate to="/signin" />)}/>
-          <Route path="/signup" element={<SignupForm onSignup={handleSignup} />}/>
-          <Route path="/signin" element={<SigninForm onSignin={handleSignin} />}/>
+          <Route
+            index
+            element={
+              user ? (
+                <Dashboard user={user} handleLogout={handleLogout} />
+              ) : (
+                <Navigate to="/signin" />
+              )
+            }
+          />
+          <Route
+            path="/signup"
+            element={<SignupForm onSignup={handleSignup} />}
+          />
+          <Route
+            path="/signin"
+            element={<SigninForm onSignin={handleSignin} />}
+          />
           <Route path="/itemlist" element={<ItemList />} />
           <Route path="/itemform" element={<ItemForm />} />
           <Route path="/itemform/:id?" element={<ItemForm />} />
-          <Route path="/" element={ user ? ( <Dashboard user={user} handleLogout={handleLogout} />) : (<Navigate to="/signin" />)}/>
+          <Route
+            path="/"
+            element={
+              user ? (
+                <Dashboard user={user} handleLogout={handleLogout} />
+              ) : (
+                <Navigate to="/signin" />
+              )
+            }
+          />
           <Route
             path="/capsules-list/:userId"
             element={
@@ -97,21 +135,17 @@ const App = () => {
                   setCapsules={setCapsules}
                   selectedCapsule={selectedCapsule}
                   setSelectedCapsule={setSelectedCapsule}
-                  updateSelectedCapsule={updateSelectedCapsule}
-                  capsuleFormOpen={capsuleFormOpen}
                   setCapsuleFormOpen={setCapsuleFormOpen}
-                  handleCapsuleFormView={handleCapsuleFormView}
                 />
-              ) : (
+              ) : !openDetails ? (
                 <CapsulesList
                   currentUser={user}
                   capsules={capsules}
-                  selectedCapsule={selectedCapsule}
-                  updateSelectedCapsule={updateSelectedCapsule}
-                  capsuleFormOpen={capsuleFormOpen}
-                  setCapsuleFormOpen={setCapsuleFormOpen}
+                  openDetailsPage={openDetailsPage}
                   handleCapsuleFormView={handleCapsuleFormView}
                 />
+              ) : (
+                <Navigate to="/capsule-detail/:capsuleId" />
               )
             }
           />
@@ -119,7 +153,6 @@ const App = () => {
             path="/capsule-detail/:capsuleId"
             element={
               <CapsuleDetail
-                capsules={capsules}
                 selectedCapsule={selectedCapsule}
                 setSelectedCapsule={setSelectedCapsule}
                 setCapsules={setCapsules}
@@ -128,10 +161,34 @@ const App = () => {
               />
             }
           />
-          <Route path="/edit-user/:userId" element={<EditUser user={user} onUserUpdate={setUser} />}/>
-          <Route path="/profile/:userId" element={user ? <Profile /> : <Navigate to="/signin" />}/>
-          <Route path="/dashboard" element={ user ? ( <Dashboard user={user} handleLogout={handleLogout} />) : (<Navigate to="/signin" />)}/>
-          <Route path="/notifications" element={user ? (<NotificationWindow user={user} />) : (<Navigate to="/signin" />)}/>
+          <Route
+            path="/edit-user/:userId"
+            element={<EditUser user={user} onUserUpdate={setUser} />}
+          />
+          <Route
+            path="/profile/:userId"
+            element={user ? <Profile /> : <Navigate to="/signin" />}
+          />
+          <Route
+            path="/dashboard"
+            element={
+              user ? (
+                <Dashboard user={user} handleLogout={handleLogout} />
+              ) : (
+                <Navigate to="/signin" />
+              )
+            }
+          />
+          <Route
+            path="/notifications"
+            element={
+              user ? (
+                <NotificationWindow user={user} />
+              ) : (
+                <Navigate to="/signin" />
+              )
+            }
+          />
         </Route>
       </Routes>
     </>

@@ -1,30 +1,29 @@
 import { useState, useEffect } from "react"
 import capsuleService from "../../services/capsuleService"
+import "./CapsulesList.css"
 
 const CapsulesList = ({
   currentUser,
   capsules,
-  selectedCapsule,
-  updateSelectedCapsule,
-  capsuleFormOpen,
-  handleCapsuleFormView
+  handleCapsuleFormView,
+  openDetailsPage
 }) => {
   const [selectedType, setSelectedType] = useState("outgoing")
 
   const handleTypeChange = (evt) => setSelectedType(evt.target.value)
 
-  // TODO: replace capsule.recipient (currently id only) with recipient's username (in map)
-  // TODO: function for "Create" button that creates a new capsule (routes to capsule form component)
-
   const capsulesOutgoingFiltered = capsules.filter(
-    (capsule) => capsule.sender === currentUser._id
+    (capsule) => capsule.sender === currentUser.id
   )
   const capsulesIncomingFiltered = capsules.filter(
-    (capsule) => capsule.recipient === currentUser._id
+    (capsule) => capsule.recipient === currentUser.id
   )
   const capsulesOutgoing = capsulesOutgoingFiltered.map((capsule) => (
-    <a key={capsule._id} onClick={() => updateSelectedCapsule(capsule)}>
-      <li>
+    <li key={capsule._id}>
+      <button
+        className="clickable-area"
+        onClick={() => openDetailsPage(capsule)}
+      >
         <img src="../assets/capsule_icon.jpg" alt="Capsule icon" />
         <div>
           <h3>{capsule.recipient}</h3>
@@ -33,13 +32,16 @@ const CapsulesList = ({
             {capsule.items.length} Item{capsule.items.length > 1 ? "s" : ""}
           </p>
         </div>
-      </li>
-    </a>
+      </button>
+    </li>
   ))
 
   const capsulesIncoming = capsulesIncomingFiltered.map((capsule) => (
-    <a key={capsule._id} onClick={() => updateSelectedCapsule(capsule)}>
-      <li>
+    <li key={capsule._id}>
+      <button
+        className="clickable-area"
+        onClick={() => openDetailsPage(capsule)}
+      >
         <img src="../assets/capsule_icon.jpg" alt="Capsule icon" />
         <div>
           <h3>{capsule.recipient}</h3>
@@ -48,8 +50,8 @@ const CapsulesList = ({
             {capsule.items.length} Item{capsule.items.length > 1 ? "s" : ""}
           </p>
         </div>
-      </li>
-    </a>
+      </button>
+    </li>
   ))
 
   const currentList =
