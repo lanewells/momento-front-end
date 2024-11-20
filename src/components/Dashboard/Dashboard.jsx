@@ -17,8 +17,8 @@ const Dashboard = ({ user, handleLogout }) => {
           `${import.meta.env.VITE_BACK_END_SERVER_URL}/users/${user.id}`,
           {
             headers: {
-              Authorization: `Bearer ${token}`,
-            },
+              Authorization: `Bearer ${token}`
+            }
           }
         )
         console.log(response)
@@ -38,13 +38,13 @@ const Dashboard = ({ user, handleLogout }) => {
       <h1>Welcome, {user.username}!</h1>
       <p>This is your dashboard.</p>
       <div>
-        <button onClick={() => navigate("/create-capsule")}>
+        <button onClick={() => navigate(`/capsules-list/${user.id}`)}>
           Create a Capsule
         </button>
         <button onClick={() => navigate(`/capsules-list/${user.id}`)}>
           View Your Capsules
-        </button>  
-        <button onClick={() => navigate("/itemList")}>ItemList</button>   
+        </button>
+        <button onClick={() => navigate("/itemList")}>ItemList</button>
         <button onClick={() => navigate("/itemForm")}>ItemForm</button>
         <button onClick={() => navigate("/notifications")}>
           View Notifications
