@@ -1,22 +1,29 @@
+HTML, body {
+    margin: 0px;
+    padding: 0px;
+    border: 0px;
+}
+
 .master-page-container {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
     font-family: Arial, sans-serif;
-  }
+    background: #FAF3E0;
+}
   
-  header {
+header {
     background-color: #2C2C54;
     color: white;
     padding: 10px;
-  }
+}
   
-  .mobile-container {
+.mobile-container {
     max-width: 480px;
     margin: auto;
     color: white;
     border-radius: 10px;
-  }
+}
   
   .topnav {
     overflow: hidden;
@@ -57,7 +64,6 @@
   .master-page-content {
     flex: 1;
     padding: 20px;
-    background-color: #f8f9fa;
   }
   
   .master-page-footer {
