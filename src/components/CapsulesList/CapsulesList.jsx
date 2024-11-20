@@ -6,7 +6,7 @@ const CapsulesList = ({
   currentUser,
   capsules,
   handleCapsuleFormView,
-  openDetailsPage
+  openDetailsPage,
 }) => {
   const [selectedType, setSelectedType] = useState("outgoing")
 
