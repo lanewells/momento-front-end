@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
-import { Routes, Route } from "react-router-dom"
+import { Routes, Route, Navigate } from "react-router-dom"
+import MasterPage from "./MasterPage/MasterPage"
 import SignupForm from "./components/SignupForm/SignupForm"
 import SigninForm from "./components/SigninForm/SigninForm"
 import ItemForm from "./components/ItemForm/ItemForm"
@@ -13,7 +14,6 @@ import EditUser from "./components/EditUser/EditUser"
 import Profile from "./components/Profile/Profile"
 import NotificationWindow from "./components/NotificationWindow/NotificationWindow"
 import axios from "axios"
-import { Navigate } from "react-router-dom"
 
 const App = () => {
   const [user, setUser] = useState(null)
@@ -77,100 +77,64 @@ const App = () => {
   }
 
   return (
-    <div>
+    <>
       <Routes>
-      <Route path="/itemform" element={<ItemForm />} />
-      <Route path="/itemform/:id?" element={<ItemForm />} />
-      <Route path="/itemlist" element={<ItemList />} />
-        <Route
-          path="/"
-          element={
-            user ? (
-              <Dashboard user={user} handleLogout={handleLogout} />
-            ) : (
-              <Navigate to="/signin" />
-            )
-          }
-        />
-        <Route
-          path="/signup"
-          element={<SignupForm onSignup={handleSignup} />}
-        />
-        <Route
-          path="/signin"
-          element={<SigninForm onSignin={handleSignin} />}
-        />
-        <Route
-          path="/capsules-list/:userId"
-          element={
-            capsuleFormOpen ? (
-              <CapsuleForm
-                currentUser={user}
+        <Route path="/" element={<MasterPage />}>
+          <Route index element={ user ? ( <Dashboard user={user} handleLogout={handleLogout} />) : (<Navigate to="/signin" />)}/>
+          <Route path="/signup" element={<SignupForm onSignup={handleSignup} />}/>
+          <Route path="/signin" element={<SigninForm onSignin={handleSignin} />}/>
+          <Route path="/itemlist" element={<ItemList />} />
+          <Route path="/itemform" element={<ItemForm />} />
+          <Route path="/itemform/:id?" element={<ItemForm />} />
+          <Route path="/" element={ user ? ( <Dashboard user={user} handleLogout={handleLogout} />) : (<Navigate to="/signin" />)}/>
+          <Route
+            path="/capsules-list/:userId"
+            element={
+              capsuleFormOpen ? (
+                <CapsuleForm
+                  currentUser={user}
+                  capsules={capsules}
+                  setCapsules={setCapsules}
+                  selectedCapsule={selectedCapsule}
+                  setSelectedCapsule={setSelectedCapsule}
+                  updateSelectedCapsule={updateSelectedCapsule}
+                  capsuleFormOpen={capsuleFormOpen}
+                  setCapsuleFormOpen={setCapsuleFormOpen}
+                  handleCapsuleFormView={handleCapsuleFormView}
+                />
+              ) : (
+                <CapsulesList
+                  currentUser={user}
+                  capsules={capsules}
+                  selectedCapsule={selectedCapsule}
+                  updateSelectedCapsule={updateSelectedCapsule}
+                  capsuleFormOpen={capsuleFormOpen}
+                  setCapsuleFormOpen={setCapsuleFormOpen}
+                  handleCapsuleFormView={handleCapsuleFormView}
+                />
+              )
+            }
+          />
+          <Route
+            path="/capsule-detail/:capsuleId"
+            element={
+              <CapsuleDetail
                 capsules={capsules}
-                setCapsules={setCapsules}
                 selectedCapsule={selectedCapsule}
                 setSelectedCapsule={setSelectedCapsule}
-                updateSelectedCapsule={updateSelectedCapsule}
-                capsuleFormOpen={capsuleFormOpen}
+                setCapsules={setCapsules}
                 setCapsuleFormOpen={setCapsuleFormOpen}
                 handleCapsuleFormView={handleCapsuleFormView}
               />
-            ) : (
-              <CapsulesList
-                currentUser={user}
-                capsules={capsules}
-                selectedCapsule={selectedCapsule}
-                updateSelectedCapsule={updateSelectedCapsule}
-                capsuleFormOpen={capsuleFormOpen}
-                setCapsuleFormOpen={setCapsuleFormOpen}
-                handleCapsuleFormView={handleCapsuleFormView}
-              />
-            )
-          }
-        />
-        <Route
-          path="/capsule-detail/:capsuleId"
-          element={
-            <CapsuleDetail
-              capsules={capsules}
-              selectedCapsule={selectedCapsule}
-              setSelectedCapsule={setSelectedCapsule}
-              setCapsules={setCapsules}
-              setCapsuleFormOpen={setCapsuleFormOpen}
-              handleCapsuleFormView={handleCapsuleFormView}
-            />
-          }
-        />
-        <Route
-          path="/edit-user/:userId"
-          element={<EditUser user={user} onUserUpdate={setUser} />}
-        />
-        <Route
-          path="/profile/:userId"
-          element={user ? <Profile /> : <Navigate to="/signin" />}
-        />
-        <Route
-          path="/dashboard"
-          element={
-            user ? (
-              <Dashboard user={user} handleLogout={handleLogout} />
-            ) : (
-              <Navigate to="/signin" />
-            )
-          }
-        />
-        <Route
-          path="/notifications"
-          element={
-            user ? (
-              <NotificationWindow user={user} />
-            ) : (
-              <Navigate to="/signin" />
-            )
-          }
-        />
+            }
+          />
+          <Route path="/edit-user/:userId" element={<EditUser user={user} onUserUpdate={setUser} />}/>
+          <Route path="/profile/:userId" element={user ? <Profile /> : <Navigate to="/signin" />}/>
+          <Route path="/dashboard" element={ user ? ( <Dashboard user={user} handleLogout={handleLogout} />) : (<Navigate to="/signin" />)}/>
+          <Route path="/notifications" element={user ? (<NotificationWindow user={user} />) : (<Navigate to="/signin" />)}/>
+        </Route>
       </Routes>
-    </div>
+    </>
   )
 }
 

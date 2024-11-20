@@ -1,0 +1,185 @@
+.master-page-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+  }
+  
+  header {
+    background-color: #2C2C54;
+    color: white;
+    padding: 10px;
+  }
+  
+  .mobile-container {
+    max-width: 480px;
+    margin: auto;
+    color: white;
+    border-radius: 10px;
+  }
+  
+  .topnav {
+    overflow: hidden;
+    background-color: #2C2C54;
+    position: relative;
+  }
+  
+  .topnav #myLinks {
+    display: none;
+  }
+  
+  .topnav a {
+    color: white;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+    display: block;
+  }
+  
+  .topnav a.icon {
+    background: black;
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  
+  .topnav a:hover {
+    background-color: #ddd;
+    color: black;
+  }
+  
+  .active {
+    background-color: #2C2C54;
+    color: white;
+  }
+  
+  .master-page-content {
+    flex: 1;
+    padding: 20px;
+    background-color: #f8f9fa;
+  }
+  
+  .master-page-footer {
+    background-color: #2C2C54;
+    color: white;
+    text-align: center;
+    padding: 10px;
+  }
+  .topnav #myLinks {
+    background-color: #F5A623;
+  }
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px auto;
+    width: 100%;
+    max-width: 600px;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #FAF3E0;
+    border-radius: 8px;
+    box-sizing: border-box;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+form h1,
+form h2,
+form h3 {
+    color: #2C2C54;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: bold;
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="password"],
+form input[type="number"],
+form input[type="tel"],
+form input[type="url"],
+form select,
+form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #F5A623;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: #FFF8E7;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+form input[type="text"]:focus,
+form input[type="email"]:focus,
+form input[type="password"]:focus,
+form input[type="number"]:focus,
+form input[type="tel"]:focus,
+form input[type="url"]:focus,
+form select:focus,
+form textarea:focus {
+    border-color: #F5A623;
+    box-shadow: 0 0 5px rgba(245, 166, 35, 0.5);
+    outline: none;
+}
+
+form button,
+form input[type="submit"],
+form input[type="button"] {
+    width: auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #FAF3E0;
+    background-color: #F5A623;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+form button:hover,
+form input[type="submit"]:hover,
+form input[type="button"]:hover {
+    background-color: #CC8600;
+}
+
+form label {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #2C2C54;
+    display: block;
+}
+
+form .error {
+    font-size: 14px;
+    color: #E53935;
+    margin-top: -10px;
+    margin-bottom: 10px;
+}
+
+@media (max-width: 480px) {
+    form {
+        padding: 15px;
+    }
+
+    form input[type="text"],
+    form input[type="email"],
+    form input[type="password"],
+    form input[type="number"],
+    form input[type="tel"],
+    form input[type="url"],
+    form select,
+    form textarea {
+        font-size: 14px;
+    }
+
+    form button,
+    form input[type="submit"],
+    form input[type="button"] {
+        font-size: 14px;
+    }
+}
