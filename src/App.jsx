@@ -1,11 +1,10 @@
-
 import { useState, useEffect } from "react"
 import { Routes, Route, Navigate } from "react-router-dom"
 import MasterPage from "./MasterPage/MasterPage"
 import SignupForm from "./components/SignupForm/SignupForm"
 import SigninForm from "./components/SigninForm/SigninForm"
 import ItemForm from "./components/ItemForm/ItemForm"
-import ItemListCapsule from "./components/ItemList/ItemListCapsule";
+import ItemList from "./components/ItemList/ItemList"
 import Dashboard from "./components/Dashboard/Dashboard"
 import capsuleService from "./services/capsuleService"
 import CapsulesList from "./components/CapsulesList/CapsulesList"
@@ -15,7 +14,6 @@ import EditUser from "./components/EditUser/EditUser"
 import Profile from "./components/Profile/Profile"
 import NotificationWindow from "./components/NotificationWindow/NotificationWindow"
 import axios from "axios"
-
 
 const App = () => {
   const [user, setUser] = useState(null)
@@ -29,7 +27,7 @@ const App = () => {
     if (token) {
       axios
         .get(`${import.meta.env.VITE_BACK_END_SERVER_URL}/users/profile`, {
-          headers: { Authorization: `Bearer ${token}` }
+          headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
           console.log("Profile fetch response:", response.data)
@@ -75,7 +73,7 @@ const App = () => {
       sealDate: capsule.sealDate ? capsule.sealDate.split("T")[0] : null,
       releaseDate: capsule.releaseDate
         ? capsule.releaseDate.split("T")[0]
-        : null
+        : null,
     }
     console.log("Still selected (prepared):", preparedCapsule)
     setSelectedCapsule(preparedCapsule)
@@ -212,7 +210,9 @@ const App = () => {
           <Route path="/itemform" element={<ItemForm />} />
           <Route
             path="/itemlist"
-            element={user ? (<ItemListCapsule user={user} /> ): ( <Navigate to="/signin" />) }
+            element={
+              user ? <ItemList user={user} /> : <Navigate to="/signin" />
+            }
           />
         </Route>
       </Routes>
