@@ -17,6 +17,7 @@ const getCapsuleById = async (id) => {
     return response.data
   } catch (error) {
     console.error(`Error getting capsule with id ${id}`, error)
+    throw error
   }
 }
 
@@ -29,7 +30,6 @@ const createCapsule = async (capsuleData) => {
     throw error
   }
 }
-//TODO: ask if console.errors are ok to have in final code
 
 const updateCapsule = async (id, capsuleData) => {
   try {
@@ -43,9 +43,9 @@ const updateCapsule = async (id, capsuleData) => {
 
 const deleteCapsule = async (id) => {
   try {
-    await axios.delete(`${API_URL}${id}:`, error)
+    await axios.delete(`${API_URL}${id}:`)
   } catch (error) {
-    console.error(`Error deleting capsule with id ${id}`)
+    console.error(`Error deleting capsule with id ${id}`, error)
     throw error
   }
 }

@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import capsuleService from "../../services/capsuleService"
 
 const CapsuleForm = ({
@@ -17,12 +17,14 @@ const CapsuleForm = ({
     status: "",
     items: []
   }
-  console.log("Current user id:", currentUser.id)
-  console.log("Current username:", currentUser.username)
 
-  const [formData, setFormData] = useState(
-    selectedCapsule ? selectedCapsule : initialState
-  )
+  const [formData, setFormData] = useState(initialState)
+
+  useEffect(() => {
+    if (selectedCapsule) {
+      setFormData(selectedCapsule)
+    }
+  }, [selectedCapsule])
 
   const handleChange = (evt) => {
     setFormData({ ...formData, [evt.target.name]: evt.target.value })
@@ -58,15 +60,17 @@ const CapsuleForm = ({
 
       setCapsules((prevCapsules) =>
         prevCapsules.map((capsule) =>
-          capsule.id === id ? updatedCapsule : capsule
+          capsule._id === id ? updatedCapsule : capsule
         )
       )
 
-      setSelectedCapsule(null)
-      setCapsuleFormOpen(false)
+      setSelectedCapsule(updatedCapsule)
+
       console.log("Capsule updated successfully!")
+      return updatedCapsule
     } catch (error) {
       console.error("Failed to update capsule:", error)
+      throw error
     }
   }
 
@@ -93,11 +97,16 @@ const CapsuleForm = ({
 
     try {
       if (selectedCapsule) {
-        await handleUpdateCapsule(formattedData.id, formattedData)
+        const updatedCapsule = await handleUpdateCapsule(
+          formData._id,
+          formattedData
+        )
+        setFormData(updatedCapsule)
       } else {
         await handleAddCapsule(formattedData)
+        setFormData(initialState)
       }
-      setFormData(initialState)
+      setCapsuleFormOpen(false)
     } catch (error) {
       console.error("Error submitting create capsule form:", error)
       alert("Womp, womp. Something went wrong. Please try again!")
@@ -127,7 +136,7 @@ const CapsuleForm = ({
           onChange={handleChange}
         />
 
-        <label htmlFor="sealDate">Seal Date *Optional*</label>
+        <label htmlFor="sealDate">Seal Date (Optional)</label>
         <input
           id="sealDate"
           name="sealDate"
@@ -156,11 +165,19 @@ const CapsuleForm = ({
         />
 
         <button type="submit">
-          {selectedCapsule ? "Save Changes" : "Save New Capsule"}
+          {selectedCapsule ? "Save Changes" : "Create Capsule"}
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setSelectedCapsule(null)
+            setCapsuleFormOpen(false)
+          }}
+        >
+          Cancel
         </button>
       </form>
     </>
   )
 }
-
 export default CapsuleForm
