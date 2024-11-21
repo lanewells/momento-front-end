@@ -3,11 +3,11 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./ItemList.css";
 
-const ItemList = () => {
-  const [items, setItems] = useState([]); 
-  const [loading, setLoading] = useState(true); 
-  const [error, setError] = useState(null); 
-  const navigate = useNavigate(); 
+const ItemList = ({ capsuleId }) => { // Pass capsuleId as a prop
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -22,7 +22,12 @@ const ItemList = () => {
           }
         );
 
-        const sortedItems = response.data.sort(
+        // Filter items by capsuleId
+        const filteredItems = response.data.filter(
+          (item) => item.capsule === capsuleId
+        );
+
+        const sortedItems = filteredItems.sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         );
         setItems(sortedItems);
@@ -35,11 +40,13 @@ const ItemList = () => {
     };
 
     fetchItems();
-  }, []);
+  }, [capsuleId]);
 
   const handleDelete = async (id) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this item?");
-    if (!confirmDelete) return; 
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this item?"
+    );
+    if (!confirmDelete) return;
 
     try {
       const token = localStorage.getItem("token");
@@ -48,7 +55,7 @@ const ItemList = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      setItems(items.filter((item) => item._id !== id)); 
+      setItems(items.filter((item) => item._id !== id));
     } catch (err) {
       console.error("Error deleting item:", err);
       setError("Failed to delete item. Please try again.");
@@ -56,11 +63,11 @@ const ItemList = () => {
   };
 
   const handleEdit = (id) => {
-    navigate(`/itemform/${id}`); 
+    navigate(`/itemform/${id}`);
   };
 
   const handleAddItem = () => {
-    navigate("/itemform"); 
+    navigate("/itemform");
   };
 
   if (loading) {
@@ -109,8 +116,18 @@ const ItemList = () => {
                 </div>
               )}
               <div className="item-list-actions">
-                <button onClick={() => handleEdit(item._id)}className="item-list-edit">Edit</button>
-                <button onClick={() => handleDelete(item._id)}className="item-list-delete"> Delete</button>
+                <button
+                  onClick={() => handleEdit(item._id)}
+                  className="item-list-edit"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => handleDelete(item._id)}
+                  className="item-list-delete"
+                >
+                  Delete
+                </button>
               </div>
             </li>
           ))}
