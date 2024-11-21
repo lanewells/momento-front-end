@@ -6,7 +6,7 @@ import "./ItemForm.css"
 const ItemForm = () => {
   const { id } = useParams()
   const location = useLocation()
-  const capsuleId = location.state?.capsuleId
+  const [capsuleId, setCapsuleId] = useState(location.state?.capsuleId || "")
   const navigate = useNavigate()
 
   const [formData, setFormData] = useState({
@@ -35,6 +35,10 @@ const ItemForm = () => {
             }
           )
           setFormData(response.data)
+
+          if (!capsuleId && response.data.capsule) {
+            setCapsuleId(response.data.capsule)
+          }
         } catch (err) {
           console.error("Error fetching item:", err)
           setError("Failed to load item for editing.")
@@ -80,15 +84,10 @@ const ItemForm = () => {
       return
     }
 
-    const filteredFormData =
-      formData.type === "message"
-        ? { type: formData.type, text: formData.text, capsule: capsuleId }
-        : {
-            type: formData.type,
-            hyperlink: formData.hyperlink,
-            hyperlinkDescription: formData.hyperlinkDescription,
-            capsule: capsuleId,
-          }
+    const filteredFormData = {
+      ...formData,
+      capsule: capsuleId,
+    }
 
     try {
       const token = localStorage.getItem("token")

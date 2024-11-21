@@ -207,7 +207,7 @@ const App = () => {
               )
             }
           />
-          <Route path="/itemform" element={<ItemForm />} />
+          <Route path="/itemform/:id?" element={<ItemForm />} />
           <Route
             path="/itemlist"
             element={
