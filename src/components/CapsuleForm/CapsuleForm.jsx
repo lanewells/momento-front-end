@@ -17,8 +17,7 @@ const CapsuleForm = ({
     recipient: "",
     sealDate: "",
     releaseDate: "",
-    status: "pending seal",
-    items: []
+    status: "pending seal"
   }
 
   const [formData, setFormData] = useState(initialState)
@@ -108,7 +107,6 @@ const CapsuleForm = ({
       releaseDate: formData.releaseDate
         ? new Date(formData.releaseDate).toISOString()
         : null
-      // status: "pending seal"
     }
 
     console.log("Submitting data:", formattedData)
@@ -172,16 +170,6 @@ const CapsuleForm = ({
           type="date"
           value={formData.releaseDate || ""}
           onChange={handleChange}
-        />
-
-        <label htmlFor="items">Items In Capsule</label>
-        <input
-          id="items"
-          name="items"
-          value={formData.items ? formData.items.join(",") : ""}
-          onChange={(evt) =>
-            setFormData({ ...formData, items: evt.target.value.split(",") })
-          }
         />
 
         <button type="submit">

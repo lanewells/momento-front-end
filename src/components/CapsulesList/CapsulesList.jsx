@@ -26,19 +26,17 @@ const CapsulesList = ({ currentUser, capsules, openDetailsPage }) => {
         onClick={() => openDetailsPage(capsule)}
       >
         <div className="container-capsule">
-  <img
-    src="../src/assets/capsule_bkg_cream.png"
-    className="image-capsule"
-    alt="Capsule icon"
-  />
-  <div className="text-capsule">
-    <h3>{capsule.recipient}</h3>
-    <p>{capsule.status}</p>
-    <p>
-      {capsule.items.length} Item{capsule.items.length > 1 ? "s" : ""}
-    </p>
-  </div>
-</div>
+          <img
+            src="../src/assets/capsule_bkg_cream.png"
+            className="image-capsule"
+            alt="Capsule icon"
+          />
+          <div className="text-capsule">
+            <h3>To: {capsule.recipient}</h3>
+            <p>Status: {capsule.status}</p>
+            <p>Release Date: {capsule.releaseDate}</p>
+          </div>
+        </div>
       </button>
     </li>
   ))
@@ -51,11 +49,9 @@ const CapsulesList = ({ currentUser, capsules, openDetailsPage }) => {
       >
         <img src="../assets/capsule_icon.jpg" alt="Capsule icon" />
         <div>
-          <h3>{capsule.recipient}</h3>
-          <p>{capsule.status}</p>
-          <p>
-            {capsule.items.length} Item{capsule.items.length === 0 ? "s" : ""}
-          </p>
+          <h3>From: {capsule.sender}</h3>
+          <p>Status: {capsule.status}</p>
+          <p>Release Date: {capsule.releaseDate} </p>
         </div>
       </button>
     </li>
