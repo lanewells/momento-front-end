@@ -1,12 +1,13 @@
-import React from "react";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import "./MasterPage.css";
+import React from "react"
+import { Outlet, useLocation, useNavigate } from "react-router-dom"
+import "./MasterPage.css"
 
 const MasterPage = ({ user, handleLogout }) => {
-  const navigate = useNavigate();
-  const location = useLocation();
+  const navigate = useNavigate()
+  const location = useLocation()
 
-  const hideHeaderFooter = location.pathname === "/signin" || location.pathname === "/signup";
+  const hideHeaderFooter =
+    location.pathname === "/signin" || location.pathname === "/signup"
 
   return (
     <>
@@ -29,10 +30,7 @@ const MasterPage = ({ user, handleLogout }) => {
       </div>
       {!hideHeaderFooter && (
         <div className="bottom-menu">
-          <button
-            className="menu-item"
-            onClick={() => navigate(`/dashboard`)}
-          >
+          <button className="menu-item" onClick={() => navigate(`/dashboard`)}>
             <i className="fa fa-home"></i>
             <span>Dashboard</span>
           </button>
@@ -60,9 +58,7 @@ const MasterPage = ({ user, handleLogout }) => {
         </div>
       )}
     </>
-  );
-};
+  )
+}
 
-export default MasterPage;
-
-
+export default MasterPage

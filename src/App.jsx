@@ -96,7 +96,10 @@ const App = () => {
   return (
     <>
       <Routes>
-        <Route path="/" element={<MasterPage />}>
+        <Route
+          path="/"
+          element={<MasterPage user={user} handleLogout={handleLogout} />}
+        >
           <Route
             index
             element={
