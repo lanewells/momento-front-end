@@ -1,30 +1,31 @@
-import { useState, useEffect } from "react";
-import { useParams, useLocation } from "react-router-dom";
-import axios from "axios";
-import "./ItemForm.css";
+import { useState, useEffect } from "react"
+import { useParams, useLocation, useNavigate } from "react-router-dom"
+import axios from "axios"
+import "./ItemForm.css"
 
 const ItemForm = () => {
-  const { id } = useParams();
-  const location = useLocation();
-  const capsuleId = location.state?.capsuleId; 
+  const { id } = useParams()
+  const location = useLocation()
+  const [capsuleId, setCapsuleId] = useState(location.state?.capsuleId || "")
+  const navigate = useNavigate()
 
   const [formData, setFormData] = useState({
     type: "message",
     text: "",
     hyperlink: "",
     hyperlinkDescription: "",
-    capsule: capsuleId || "", 
-  });
+    capsule: capsuleId || "",
+  })
 
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
 
   useEffect(() => {
     if (id) {
       const fetchItem = async () => {
         try {
-          setLoading(true);
-          const token = localStorage.getItem("token");
+          setLoading(true)
+          const token = localStorage.getItem("token")
           const response = await axios.get(
             `${import.meta.env.VITE_BACK_END_SERVER_URL}/items/${id}`,
             {
@@ -32,65 +33,64 @@ const ItemForm = () => {
                 Authorization: `Bearer ${token}`,
               },
             }
-          );
-          setFormData(response.data);
-        } catch (err) {
-          console.error("Error fetching item:", err);
-          setError("Failed to load item for editing.");
-        } finally {
-          setLoading(false);
-        }
-      };
+          )
+          setFormData(response.data)
 
-      fetchItem();
+          if (!capsuleId && response.data.capsule) {
+            setCapsuleId(response.data.capsule)
+          }
+        } catch (err) {
+          console.error("Error fetching item:", err)
+          setError("Failed to load item for editing.")
+        } finally {
+          setLoading(false)
+        }
+      }
+
+      fetchItem()
     }
-  }, [id]);
+  }, [id])
 
   const handleChange = (evt) => {
-    setFormData({ ...formData, [evt.target.name]: evt.target.value });
-  };
+    setFormData({ ...formData, [evt.target.name]: evt.target.value })
+  }
 
   const handleSubmit = async (evt) => {
-    evt.preventDefault();
+    evt.preventDefault()
 
     if (!formData.type) {
-      alert("Item type is required.");
-      return;
+      alert("Item type is required.")
+      return
     }
 
     if (formData.type === "message" && !formData.text.trim()) {
-      alert("Please enter a message.");
-      return;
+      alert("Please enter a message.")
+      return
     }
 
     if (formData.type === "hyperlink") {
       if (!formData.hyperlink.trim()) {
-        alert("Please enter a hyperlink.");
-        return;
+        alert("Please enter a hyperlink.")
+        return
       }
       if (!formData.hyperlinkDescription.trim()) {
-        alert("Please enter a description for the hyperlink.");
-        return;
+        alert("Please enter a description for the hyperlink.")
+        return
       }
     }
 
     if (!capsuleId) {
-      alert("Capsule ID is missing. Cannot save the item.");
-      return;
+      alert("Capsule ID is missing. Cannot save the item.")
+      return
     }
 
-    const filteredFormData =
-      formData.type === "message"
-        ? { type: formData.type, text: formData.text, capsule: capsuleId }
-        : {
-            type: formData.type,
-            hyperlink: formData.hyperlink,
-            hyperlinkDescription: formData.hyperlinkDescription,
-            capsule: capsuleId,
-          };
+    const filteredFormData = {
+      ...formData,
+      capsule: capsuleId,
+    }
 
     try {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("token")
 
       if (id) {
         // Update existing item
@@ -102,10 +102,9 @@ const ItemForm = () => {
               Authorization: `Bearer ${token}`,
             },
           }
-        );
+        )
       } else {
         // Create new item
-        console.log("Submitting item data:", filteredFormData);
 
         await axios.post(
           `${import.meta.env.VITE_BACK_END_SERVER_URL}/items`,
@@ -115,15 +114,17 @@ const ItemForm = () => {
               Authorization: `Bearer ${token}`,
             },
           }
-        );
+        )
       }
 
-      window.location.href = `/itemlist?capsuleId=${capsuleId}`;
+      navigate(`/capsule-detail/${capsuleId}`)
     } catch (err) {
-      console.error("Error saving item:", err.response?.data || err.message);
-      setError(err.response?.data?.message || "Failed to save item. Please try again.");
+      console.error("Error saving item:", err.response?.data || err.message)
+      setError(
+        err.response?.data?.message || "Failed to save item. Please try again."
+      )
     }
-  };
+  }
 
   return (
     <div className="item-form-container">
@@ -194,7 +195,7 @@ const ItemForm = () => {
         </button>
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default ItemForm;
+export default ItemForm
