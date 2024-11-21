@@ -60,7 +60,7 @@ const CapsuleForm = ({
 
       setCapsules((prevCapsules) =>
         prevCapsules.map((capsule) =>
-          capsule.id === id ? updatedCapsule : capsule
+          capsule._id === id ? updatedCapsule : capsule
         )
       )
 
@@ -95,7 +95,7 @@ const CapsuleForm = ({
 
     try {
       if (selectedCapsule) {
-        await handleUpdateCapsule(formattedData.id, formattedData)
+        await handleUpdateCapsule(formattedData._id, formattedData)
       } else {
         await handleAddCapsule(formattedData)
       }
@@ -129,7 +129,7 @@ const CapsuleForm = ({
           onChange={handleChange}
         />
 
-        <label htmlFor="sealDate">Seal Date *Optional*</label>
+        <label htmlFor="sealDate">Seal Date (Optional)</label>
         <input
           id="sealDate"
           name="sealDate"
@@ -158,7 +158,16 @@ const CapsuleForm = ({
         />
 
         <button type="submit">
-          {selectedCapsule ? "Save Changes" : "Save New Capsule"}
+          {selectedCapsule ? "Save Changes" : "Create Capsule"}
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setSelectedCapsule(null)
+            setCapsuleFormOpen(false)
+          }}
+        >
+          Cancel
         </button>
       </form>
     </>
