@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import axios from "axios"
 
-const Profile = () => {
+const Profile = ({ handleLogout }) => {
   const { userId } = useParams()
   const navigate = useNavigate()
   const [user, setUser] = useState(null)
@@ -28,6 +28,35 @@ const Profile = () => {
     }
   }, [userId, navigate])
 
+  const handleEditAccount = () => {
+    navigate(`/edit-user/${userId}`)
+  }
+
+  const handleDeleteAccount = async () => {
+    if (window.confirm("Are you sure you want to delete your account?")) {
+      try {
+        const token = localStorage.getItem("token")
+
+        await axios.delete(
+          `${import.meta.env.VITE_BACK_END_SERVER_URL}/users/${userId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+        alert("Account deleted successfully.")
+        handleLogout()
+        navigate("/signup")
+      } catch (error) {
+        const errorMessage =
+          error.response?.data?.error ||
+          "An error occurred while deleting the account. Please try again."
+        alert(errorMessage)
+      }
+    }
+  }
+
   if (error) return <p>{error}</p>
   if (!user) return <p>Loading...</p>
 
@@ -42,6 +71,8 @@ const Profile = () => {
         {new Date(user.birthDate).toLocaleDateString()}
       </p>
       <button onClick={() => navigate("/dashboard")}>Back to Dashboard</button>
+      <button onClick={handleEditAccount}>Edit Account</button>
+      <button onClick={handleDeleteAccount}>Delete Account</button>
     </div>
   )
 }
