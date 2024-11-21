@@ -26,3 +26,4 @@ dist-ssr
 
 
 src/components/ItemForm/ItemForm2.jsx
+src/components/ItemForm/images.jsx

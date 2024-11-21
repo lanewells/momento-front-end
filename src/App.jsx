@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react"
 import { Routes, Route, Navigate } from "react-router-dom"
 import MasterPage from "./MasterPage/MasterPage"
@@ -67,25 +68,34 @@ const App = () => {
   }, [])
 
   const updateSelectedCapsule = (capsule) => {
-    setSelectedCapsule(capsule)
+    if (!capsule) return
+    const preparedCapsule = {
+      ...capsule,
+      sealDate: capsule.sealDate ? capsule.sealDate.split("T")[0] : null,
+      releaseDate: capsule.releaseDate
+        ? capsule.releaseDate.split("T")[0]
+        : null
+    }
+    console.log("Still selected (prepared):", preparedCapsule)
+    setSelectedCapsule(preparedCapsule)
   }
 
   const handleCapsuleFormView = (capsule) => {
-    if (!capsule.id) {
+    if (!capsule._id) {
       setSelectedCapsule(null)
     }
+    console.log("Capsule id into form:", capsule._id)
     setCapsuleFormOpen(!capsuleFormOpen)
   }
 
   const openDetailsPage = (capsule) => {
     if (capsule._id) {
       console.log("Capsule id:", capsule._id)
-      console.log("Capsule:", capsule)
+      console.log("Now selected for detail viewing:", capsule)
+
       updateSelectedCapsule(capsule)
       setOpenDetails(!openDetails)
     } else {
-      console.log("Capsule id:", capsule._id)
-      console.log("Capsule:", capsule)
       console.log("Error opening details page. No capsule id")
     }
   }
@@ -152,13 +162,25 @@ const App = () => {
           <Route
             path="/capsule-detail/:capsuleId"
             element={
-              <CapsuleDetail
-                selectedCapsule={selectedCapsule}
-                setSelectedCapsule={setSelectedCapsule}
-                setCapsules={setCapsules}
-                setCapsuleFormOpen={setCapsuleFormOpen}
-                handleCapsuleFormView={handleCapsuleFormView}
-              />
+              capsuleFormOpen ? (
+                <CapsuleForm
+                  currentUser={user}
+                  capsules={capsules}
+                  setCapsules={setCapsules}
+                  selectedCapsule={selectedCapsule}
+                  setSelectedCapsule={setSelectedCapsule}
+                  setCapsuleFormOpen={setCapsuleFormOpen}
+                />
+              ) : (
+                <CapsuleDetail
+                  selectedCapsule={selectedCapsule}
+                  setSelectedCapsule={setSelectedCapsule}
+                  updateSelectedCapsule={updateSelectedCapsule}
+                  setCapsules={setCapsules}
+                  setCapsuleFormOpen={setCapsuleFormOpen}
+                  handleCapsuleFormView={handleCapsuleFormView}
+                />
+              )
             }
           />
           <Route
