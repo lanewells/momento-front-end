@@ -64,11 +64,13 @@ const CapsuleForm = ({
         )
       )
 
-      setSelectedCapsule(null)
-      setCapsuleFormOpen(false)
+      setSelectedCapsule(updatedCapsule)
+
       console.log("Capsule updated successfully!")
+      return updatedCapsule
     } catch (error) {
       console.error("Failed to update capsule:", error)
+      throw error
     }
   }
 
@@ -95,11 +97,16 @@ const CapsuleForm = ({
 
     try {
       if (selectedCapsule) {
-        await handleUpdateCapsule(formattedData._id, formattedData)
+        const updatedCapsule = await handleUpdateCapsule(
+          formData._id,
+          formattedData
+        )
+        setFormData(updatedCapsule)
       } else {
         await handleAddCapsule(formattedData)
+        setFormData(initialState)
       }
-      setFormData(initialState)
+      setCapsuleFormOpen(false)
     } catch (error) {
       console.error("Error submitting create capsule form:", error)
       alert("Womp, womp. Something went wrong. Please try again!")
