@@ -1,6 +1,6 @@
 import { useState } from "react"
 import capsuleService from "../../services/capsuleService"
-import ItemList from "../ItemList/ItemList.jsx"
+import ItemListCapsule from "../ItemList/ItemListCapsule"
 
 const CapsuleDetail = ({
   selectedCapsule,
@@ -50,7 +50,7 @@ const CapsuleDetail = ({
           : `From ${selectedCapsule.sender}`}
       </h3>
       <div>
-        <ItemList capsuleId={selectedCapsule._id} />
+        <ItemListCapsule capsuleId={selectedCapsule._id} />
       </div>
       <h3>Release Date: {selectedCapsule.releaseDate}</h3>
       {selectedCapsule.sealDate ? (

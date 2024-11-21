@@ -21,7 +21,7 @@ const MasterPage = () => {
               <a href="#contact">Contact</a>
               <a href="#about">About</a>
             </div>
-            <a href="javascript:void(0);" className="icon" onClick={toggleMenu}>
+            <a className="icon" onClick={toggleMenu} role="button" >
               <i className="fa fa-bars"></i>
             </a>
           </div>

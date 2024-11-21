@@ -1,19 +1,20 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./ItemList.css";
 
-const ItemListForCapsule = () => {
+const ItemList = ({ capsuleId }) => { // Pass capsuleId as a prop
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { capsuleId } = useParams(); 
+  const navigate = useNavigate();
+
   useEffect(() => {
-    const fetchItemsForCapsule = async () => {
+    const fetchItems = async () => {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.get(
-          `${import.meta.env.VITE_BACK_END_SERVER_URL}/capsules/${capsuleId}/items`,
+          `${import.meta.env.VITE_BACK_END_SERVER_URL}/items`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -21,20 +22,53 @@ const ItemListForCapsule = () => {
           }
         );
 
-        const sortedItems = response.data.sort(
+        // Filter items by capsuleId
+        const filteredItems = response.data.filter(
+          (item) => item.capsule === capsuleId
+        );
+
+        const sortedItems = filteredItems.sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         );
         setItems(sortedItems);
       } catch (err) {
-        console.error("Error fetching items for capsule:", err);
-        setError("Failed to load items for this capsule. Please try again.");
+        console.error("Error fetching items:", err);
+        setError("Failed to load items. Please try again.");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchItemsForCapsule();
+    fetchItems();
   }, [capsuleId]);
+
+  const handleDelete = async (id) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this item?"
+    );
+    if (!confirmDelete) return;
+
+    try {
+      const token = localStorage.getItem("token");
+      await axios.delete(`${import.meta.env.VITE_BACK_END_SERVER_URL}/items/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setItems(items.filter((item) => item._id !== id));
+    } catch (err) {
+      console.error("Error deleting item:", err);
+      setError("Failed to delete item. Please try again.");
+    }
+  };
+
+  const handleEdit = (id) => {
+    navigate(`/itemform/${id}`);
+  };
+
+  const handleAddItem = () => {
+    navigate("/itemform");
+  };
 
   if (loading) {
     return <div className="item-list-loading">Loading items...</div>;
@@ -47,17 +81,20 @@ const ItemListForCapsule = () => {
   return (
     <div className="item-list-container">
       <div className="item-list-header">
-        <h2 className="item-list-heading">Items in Capsule</h2>
+        <h2 className="item-list-heading">List Items</h2>
+        <button onClick={handleAddItem} className="item-list-add-button">
+          Add New Item
+        </button>
       </div>
       {items.length === 0 ? (
-        <p className="item-list-empty">No items found for this capsule. Add your first item!</p>
+        <p className="item-list-empty">No items found.</p>
       ) : (
         <ul className="item-list">
           {items.map((item) => (
             <li key={item._id} className="item-list-item">
               {item.type === "message" && (
                 <p className="item-list-message">
-                  <strong>Message:</strong> {item.text || "No message provided."}
+                  <strong>Message:</strong> {item.text}
                 </p>
               )}
               {item.type === "hyperlink" && (
@@ -74,11 +111,24 @@ const ItemListForCapsule = () => {
                     </a>
                   </p>
                   <p>
-                    <strong>Description:</strong>{" "}
-                    {item.hyperlinkDescription || "No description provided."}
+                    <strong>Description:</strong> {item.hyperlinkDescription}
                   </p>
                 </div>
               )}
+              <div className="item-list-actions">
+                <button
+                  onClick={() => handleEdit(item._id)}
+                  className="item-list-edit"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => handleDelete(item._id)}
+                  className="item-list-delete"
+                >
+                  Delete
+                </button>
+              </div>
             </li>
           ))}
         </ul>
@@ -87,4 +137,4 @@ const ItemListForCapsule = () => {
   );
 };
 
-export default ItemListForCapsule;
+export default ItemList;
