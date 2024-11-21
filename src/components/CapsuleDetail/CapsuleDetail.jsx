@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import capsuleService from "../../services/capsuleService"
-import ItemListCapsule from "../ItemList/ItemListCapsule"
+import ItemList from "../ItemList/ItemList"
 
 const CapsuleDetail = ({
   selectedCapsule,
@@ -71,7 +71,7 @@ const CapsuleDetail = ({
           : `From ${selectedCapsule.sender}`}
       </h3>
       <div>
-        <ItemListCapsule capsuleId={selectedCapsule._id} />
+        <ItemList capsuleId={selectedCapsule._id} />
       </div>
       <h3>Release Date: {selectedCapsule.releaseDate}</h3>
       {selectedCapsule.sealDate ? (

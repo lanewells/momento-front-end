@@ -25,7 +25,7 @@ const App = () => {
     if (token) {
       axios
         .get(`${import.meta.env.VITE_BACK_END_SERVER_URL}/users/profile`, {
-          headers: { Authorization: `Bearer ${token}` }
+          headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
           console.log("Profile fetch response:", response.data)
@@ -71,7 +71,7 @@ const App = () => {
       sealDate: capsule.sealDate ? capsule.sealDate.split("T")[0] : null,
       releaseDate: capsule.releaseDate
         ? capsule.releaseDate.split("T")[0]
-        : null
+        : null,
     }
     console.log("Still selected (prepared):", preparedCapsule)
     setSelectedCapsule(preparedCapsule)
@@ -111,9 +111,6 @@ const App = () => {
             path="/signin"
             element={<SigninForm onSignin={handleSignin} />}
           />
-          <Route path="/itemlist" element={<ItemList />} />
-          <Route path="/itemform" element={<ItemForm />} />
-          <Route path="/itemform/:id?" element={<ItemForm />} />
           <Route
             path="/"
             element={
@@ -185,7 +182,13 @@ const App = () => {
           />
           <Route
             path="/profile/:userId"
-            element={user ? <Profile /> : <Navigate to="/signin" />}
+            element={
+              user ? (
+                <Profile handleLogout={handleLogout} />
+              ) : (
+                <Navigate to="/signin" />
+              )
+            }
           />
           <Route
             path="/dashboard"
@@ -205,6 +208,13 @@ const App = () => {
               ) : (
                 <Navigate to="/signin" />
               )
+            }
+          />
+          <Route path="/itemform/:id?" element={<ItemForm />} />
+          <Route
+            path="/itemlist"
+            element={
+              user ? <ItemList user={user} /> : <Navigate to="/signin" />
             }
           />
         </Route>
