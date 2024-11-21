@@ -30,7 +30,6 @@ const App = () => {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
-          console.log("Profile fetch response:", response.data)
           setUser(response.data.user || response.data)
         })
         .catch(() => localStorage.removeItem("token"))
@@ -38,13 +37,11 @@ const App = () => {
   }, [])
 
   const handleSignup = (userData) => {
-    console.log("User data after signup:", userData)
     setUser(userData.user || userData)
     localStorage.setItem("token", userData.token)
   }
 
   const handleSignin = (userData) => {
-    console.log("User data after signin:", userData)
     setUser(userData.user || userData)
     localStorage.setItem("token", userData.token)
   }
@@ -75,7 +72,6 @@ const App = () => {
         ? capsule.releaseDate.split("T")[0]
         : null,
     }
-    console.log("Still selected (prepared):", preparedCapsule)
     setSelectedCapsule(preparedCapsule)
   }
 
@@ -83,19 +79,13 @@ const App = () => {
     if (!capsule._id) {
       setSelectedCapsule(null)
     }
-    console.log("Capsule id into form:", capsule._id)
     setCapsuleFormOpen(!capsuleFormOpen)
   }
 
   const openDetailsPage = (capsule) => {
     if (capsule._id) {
-      console.log("Capsule id:", capsule._id)
-      console.log("Now selected for detail viewing:", capsule)
-
       updateSelectedCapsule(capsule)
       setOpenDetails(!openDetails)
-    } else {
-      console.log("Error opening details page. No capsule id")
     }
   }
 
