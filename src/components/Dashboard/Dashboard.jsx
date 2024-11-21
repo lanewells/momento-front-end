@@ -38,7 +38,7 @@ const Dashboard = ({ user, handleLogout }) => {
       <h1>Welcome, {user.username}!</h1>
       <p>This is your dashboard.</p>
       <div>
-        <button onClick={() => navigate(`/capsules-list/${user.id}`)}>
+        <button onClick={() => navigate(`/capsule-form/new//${user.id}`)}>
           Create a Capsule
         </button>
         <button onClick={() => navigate(`/capsules-list/${user.id}`)}>
@@ -52,7 +52,7 @@ const Dashboard = ({ user, handleLogout }) => {
         <button onClick={() => navigate(`/profile/${user.id}`)}>
           View Profile
         </button>
-        
+
         <button onClick={handleEditAccount}>Edit Account</button>
         <button onClick={handleDeleteAccount}>Delete Account</button>
         <button onClick={handleLogout}>Logout</button>
