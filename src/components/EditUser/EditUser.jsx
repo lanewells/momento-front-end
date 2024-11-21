@@ -8,7 +8,7 @@ const EditUser = ({ user, onUserUpdate }) => {
 
   const [formData, setFormData] = useState({
     username: user?.username || "",
-    birthDate: user?.birthDate || "",
+    birthDate: user?.birthDate ? user.birthDate.split("T")[0] : "",
   })
   const [error, setError] = useState("")
 
