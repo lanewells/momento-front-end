@@ -37,10 +37,10 @@ const Dashboard = ({ user, handleLogout }) => {
     <div>
       <h1>Welcome, {user.username}!</h1>
       <p>This is your dashboard.</p>
-      <img src="../src/assets/logo_bkg_cream.png" alt="Momento In Time" />
+        <img src="../src/assets/logo_bkg_cream.png" alt="Momento In Time" />
 
       <div>
-        <button onClick={() => navigate(`/capsule-form/new//${user.id}`)}>
+        <button onClick={() => navigate(`/capsule-form/new/${user.id}`)}>
           Create a Capsule
         </button>
         <button onClick={() => navigate(`/capsules-list/${user.id}`)}>
