@@ -67,9 +67,9 @@ const Profile = ({ handleLogout }) => {
         <strong>Username:</strong> {user.username}
       </p>
       <p>
-        <strong>Birth Date:</strong>{" "}
-        {new Date(user.birthDate).toLocaleDateString()}
+        <strong>Birth Date:</strong> {user.birthDate.split("T")[0]}
       </p>
+
       <button onClick={() => navigate("/dashboard")}>Back to Dashboard</button>
       <button onClick={handleEditAccount}>Edit Account</button>
       <button onClick={handleDeleteAccount}>Delete Account</button>

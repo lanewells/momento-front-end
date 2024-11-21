@@ -1,4 +1,5 @@
-import { useState } from "react"
+import { useEffect } from "react"
+import { useParams, useNavigate } from "react-router-dom"
 import capsuleService from "../../services/capsuleService"
 import ItemList from "../ItemList/ItemList"
 
@@ -6,10 +7,31 @@ const CapsuleDetail = ({
   selectedCapsule,
   setSelectedCapsule,
   updateSelectedCapsule,
-  setCapsules,
-  setCapsuleFormOpen,
-  handleCapsuleFormView,
+  setCapsules
 }) => {
+  const { capsuleId } = useParams()
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (!selectedCapsule || selectedCapsule._id !== capsuleId) {
+      const fetchCapsule = async () => {
+        try {
+          console.log("Fetching capsule with ID:", capsuleId)
+          const capsule = await capsuleService.getCapsuleById(capsuleId)
+          setSelectedCapsule(capsule)
+        } catch (error) {
+          console.error("Error fetching capsule:", error)
+          navigate("/capsules-list")
+        }
+      }
+      fetchCapsule()
+    }
+  }, [capsuleId, selectedCapsule, setSelectedCapsule, navigate])
+
+  if (!selectedCapsule) {
+    return <h1>Loading Capsule Details...</h1>
+  }
+
   const handleDeleteCapsule = async (id) => {
     try {
       const deletedCapsule = await capsuleService.deleteCapsule(id)
@@ -22,23 +44,22 @@ const CapsuleDetail = ({
         prevCapsules.filter((capsule) => capsule._id !== id)
       )
       setSelectedCapsule(null)
-      setCapsuleFormOpen(false)
+      console.log("Navigating to:", `/capsules-list/${currentUser.id}`)
+      navigate(`/capsules-list/${currentUser.id}`)
     } catch (error) {
-      console.log(error)
+      console.error("Error deleting capsule:", error)
     }
   }
 
-  if (!selectedCapsule)
-    return (
-      <div>
-        <h1>No details found for this capsule.</h1>
-      </div>
-    )
+  const handleEditCapsule = () => {
+    updateSelectedCapsule(selectedCapsule)
+    navigate(`/capsule-form/edit/${selectedCapsule._id}`)
+  }
 
   return (
     <div>
       <h1>Capsule Details</h1>
-      <img src="../assets/capsule_icon.jpg" />
+      <img src="../assets/capsule_icon.jpg" alt="Capsule Icon" />
       <h3>
         {selectedCapsule.recipient === selectedCapsule.sender
           ? "To My Future Self"
@@ -60,15 +81,7 @@ const CapsuleDetail = ({
           <button>Lock Capsule</button>
         </div>
       )}
-      <button
-        onClick={() => {
-          updateSelectedCapsule(selectedCapsule)
-          setTimeout(() => handleCapsuleFormView(selectedCapsule), 0)
-        }}
-      >
-        Edit Capsule Details
-      </button>
-
+      <button onClick={handleEditCapsule}>Edit Capsule Details</button>
       <button onClick={() => handleDeleteCapsule(selectedCapsule._id)}>
         Delete Capsule
       </button>
