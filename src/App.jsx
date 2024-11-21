@@ -27,7 +27,7 @@ const App = () => {
     if (token) {
       axios
         .get(`${import.meta.env.VITE_BACK_END_SERVER_URL}/users/profile`, {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `Bearer ${token}` }
         })
         .then((response) => {
           console.log("Profile fetch response:", response.data)
@@ -67,7 +67,16 @@ const App = () => {
   }, [])
 
   const updateSelectedCapsule = (capsule) => {
-    setSelectedCapsule(capsule)
+    if (!capsule) return
+    const preparedCapsule = {
+      ...capsule,
+      sealDate: capsule.sealDate ? capsule.sealDate.split("T")[0] : null,
+      releaseDate: capsule.releaseDate
+        ? capsule.releaseDate.split("T")[0]
+        : null
+    }
+    console.log("Still selected (prepared):", preparedCapsule)
+    setSelectedCapsule(preparedCapsule)
   }
 
   const handleCapsuleFormView = (capsule) => {
@@ -81,12 +90,11 @@ const App = () => {
   const openDetailsPage = (capsule) => {
     if (capsule._id) {
       console.log("Capsule id:", capsule._id)
-      console.log("Capsule:", capsule)
+      console.log("Now selected for detail viewing:", capsule)
+
       updateSelectedCapsule(capsule)
       setOpenDetails(!openDetails)
     } else {
-      console.log("Capsule id:", capsule._id)
-      console.log("Capsule:", capsule)
       console.log("Error opening details page. No capsule id")
     }
   }
@@ -166,6 +174,7 @@ const App = () => {
                 <CapsuleDetail
                   selectedCapsule={selectedCapsule}
                   setSelectedCapsule={setSelectedCapsule}
+                  updateSelectedCapsule={updateSelectedCapsule}
                   setCapsules={setCapsules}
                   setCapsuleFormOpen={setCapsuleFormOpen}
                   handleCapsuleFormView={handleCapsuleFormView}

@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import capsuleService from "../../services/capsuleService"
 
 const CapsuleForm = ({
@@ -17,12 +17,14 @@ const CapsuleForm = ({
     status: "",
     items: []
   }
-  console.log("Current user id:", currentUser.id)
-  console.log("Current username:", currentUser.username)
 
-  const [formData, setFormData] = useState(
-    selectedCapsule ? selectedCapsule : initialState
-  )
+  const [formData, setFormData] = useState(initialState)
+
+  useEffect(() => {
+    if (selectedCapsule) {
+      setFormData(selectedCapsule)
+    }
+  }, [selectedCapsule])
 
   const handleChange = (evt) => {
     setFormData({ ...formData, [evt.target.name]: evt.target.value })
@@ -162,5 +164,4 @@ const CapsuleForm = ({
     </>
   )
 }
-
 export default CapsuleForm

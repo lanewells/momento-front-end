@@ -6,7 +6,7 @@ const CapsulesList = ({
   currentUser,
   capsules,
   handleCapsuleFormView,
-  openDetailsPage,
+  openDetailsPage
 }) => {
   const [selectedType, setSelectedType] = useState("outgoing")
 
@@ -47,7 +47,7 @@ const CapsulesList = ({
           <h3>{capsule.recipient}</h3>
           <p>{capsule.status}</p>
           <p>
-            {capsule.items.length} Item{capsule.items.length > 1 ? "s" : ""}
+            {capsule.items.length} Item{capsule.items.length === 0 ? "s" : ""}
           </p>
         </div>
       </button>
