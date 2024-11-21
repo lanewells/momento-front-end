@@ -185,7 +185,13 @@ const App = () => {
           />
           <Route
             path="/profile/:userId"
-            element={user ? <Profile /> : <Navigate to="/signin" />}
+            element={
+              user ? (
+                <Profile handleLogout={handleLogout} />
+              ) : (
+                <Navigate to="/signin" />
+              )
+            }
           />
           <Route
             path="/dashboard"
