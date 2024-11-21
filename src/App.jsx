@@ -5,7 +5,7 @@ import MasterPage from "./MasterPage/MasterPage"
 import SignupForm from "./components/SignupForm/SignupForm"
 import SigninForm from "./components/SigninForm/SigninForm"
 import ItemForm from "./components/ItemForm/ItemForm"
-import ItemList from "./components/ItemList/ItemList"
+import ItemListCapsule from "./components/ItemList/ItemListCapsule";
 import Dashboard from "./components/Dashboard/Dashboard"
 import capsuleService from "./services/capsuleService"
 import CapsulesList from "./components/CapsulesList/CapsulesList"
@@ -15,6 +15,7 @@ import EditUser from "./components/EditUser/EditUser"
 import Profile from "./components/Profile/Profile"
 import NotificationWindow from "./components/NotificationWindow/NotificationWindow"
 import axios from "axios"
+
 
 const App = () => {
   const [user, setUser] = useState(null)
@@ -122,9 +123,6 @@ const App = () => {
             path="/signin"
             element={<SigninForm onSignin={handleSignin} />}
           />
-          <Route path="/itemlist" element={<ItemList />} />
-          <Route path="/itemform" element={<ItemForm />} />
-          <Route path="/itemform/:id?" element={<ItemForm />} />
           <Route
             path="/"
             element={
@@ -210,6 +208,11 @@ const App = () => {
                 <Navigate to="/signin" />
               )
             }
+          />
+          <Route path="/itemform" element={<ItemForm />} />
+          <Route
+            path="/itemlist"
+            element={user ? (<ItemListCapsule user={user} /> ): ( <Navigate to="/signin" />) }
           />
         </Route>
       </Routes>
