@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./ItemList.css";
 
-const ItemList = ({ capsuleId }) => { // Pass capsuleId as a prop
+const ItemList = ({ capsuleId }) => { 
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -22,7 +22,6 @@ const ItemList = ({ capsuleId }) => { // Pass capsuleId as a prop
           }
         );
 
-        // Filter items by capsuleId
         const filteredItems = response.data.filter(
           (item) => item.capsule === capsuleId
         );
@@ -60,15 +59,15 @@ const ItemList = ({ capsuleId }) => { // Pass capsuleId as a prop
       console.error("Error deleting item:", err);
       setError("Failed to delete item. Please try again.");
     }
-  };
+  }
 
   const handleEdit = (id) => {
-    navigate(`/itemform/${id}`);
-  };
+    navigate(`/itemform/${id}`)
+  }
 
   const handleAddItem = () => {
-    navigate("/itemform");
-  };
+    navigate("/itemform", { state: { capsuleId } });
+  }
 
   if (loading) {
     return <div className="item-list-loading">Loading items...</div>;
