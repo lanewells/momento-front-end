@@ -5,6 +5,7 @@ import ItemList from "../ItemList/ItemList.jsx"
 const CapsuleDetail = ({
   selectedCapsule,
   setSelectedCapsule,
+  updateSelectedCapsule,
   setCapsules,
   setCapsuleFormOpen,
   handleCapsuleFormView
@@ -59,9 +60,15 @@ const CapsuleDetail = ({
           <button>Lock Capsule</button>
         </div>
       )}
-      <button onClick={() => handleCapsuleFormView(selectedCapsule)}>
+      <button
+        onClick={() => {
+          updateSelectedCapsule(selectedCapsule)
+          setTimeout(() => handleCapsuleFormView(selectedCapsule), 0)
+        }}
+      >
         Edit Capsule Details
       </button>
+
       <button onClick={() => handleDeleteCapsule(selectedCapsule._id)}>
         Delete Capsule
       </button>
