@@ -31,6 +31,13 @@ const MasterPage = ({ user, handleLogout }) => {
         <div className="bottom-menu">
           <button
             className="menu-item"
+            onClick={() => navigate(`/dashboard`)}
+          >
+            <i className="fa fa-home"></i>
+            <span>Dashboard</span>
+          </button>
+          <button
+            className="menu-item"
             onClick={() => navigate(`/profile/${user.id}`)}
           >
             <i className="fa fa-user"></i>
@@ -57,3 +64,5 @@ const MasterPage = ({ user, handleLogout }) => {
 };
 
 export default MasterPage;
+
+

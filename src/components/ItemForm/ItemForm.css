@@ -106,7 +106,7 @@
 }
 
 .item-form-type-list input[type="radio"] {
-  margin-right: 5px; 
+  margin-right: 5px; /* Adjust spacing between radio button and label */
 }
 
 .item-form-type-list label {

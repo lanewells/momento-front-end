@@ -1,15 +1,1 @@
-.clickable-area {
-  all: unset;
-  display: block;
-  width: 100%;
-  text-align: left; /* Align text content to the left */
-  cursor: pointer;
-}
 
-.clickable-area:hover {
-  background-color: #f0f0f0; /* Add hover effect */
-}
-
-.clickable-area:focus {
-  outline: 2px solid #007bff; /* Visible focus for accessibility */
-}

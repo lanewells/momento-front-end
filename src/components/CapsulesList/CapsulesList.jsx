@@ -20,16 +20,22 @@ const CapsulesList = ({ currentUser, capsules, openDetailsPage }) => {
     (capsule) => capsule.recipient === currentUser.id
   )
   const capsulesOutgoing = capsulesOutgoingFiltered.map((capsule) => (
-    <li key={capsule._id}>
+    <li className="item-list-item" key={capsule._id}>
       <button
         className="clickable-area"
         onClick={() => openDetailsPage(capsule)}
       >
-        <img src="../assets/capsule_icon.jpg" alt="Capsule icon" />
-        <div>
-          <h3>To: {capsule.recipient}</h3>
-          <p>Status: {capsule.status}</p>
-          <p>Release Date: {capsule.releaseDate}</p>
+        <div className="container-capsule">
+          <img
+            src="../src/assets/capsule_bkg_cream.png"
+            className="image-capsule"
+            alt="Capsule icon"
+          />
+          <div className="text-capsule">
+            <h3>To: {capsule.recipient}</h3>
+            <p>Status: {capsule.status}</p>
+            <p>Release Date: {capsule.releaseDate}</p>
+          </div>
         </div>
       </button>
     </li>
@@ -55,10 +61,13 @@ const CapsulesList = ({ currentUser, capsules, openDetailsPage }) => {
     selectedType === "outgoing" ? capsulesOutgoing : capsulesIncoming
 
   return (
-    <div>
-      <h1>My Capsules</h1>
-      <button onClick={handleCreateButton}>Create</button>
-
+    <div className="item-list-container">
+      <div className="item-list-header">
+        <h2 className="item-list-heading">My Capsules</h2>
+        <button  onClick={handleCreateButton} className="item-list-add-button">
+          Add New Capsule
+        </button>
+      </div>
       <div className="radio-buttons">
         <label htmlFor="outgoing">Outgoing</label>
         <input
@@ -87,7 +96,7 @@ const CapsulesList = ({ currentUser, capsules, openDetailsPage }) => {
       ) : (
         <>
           <h2>{selectedType}</h2>
-          <ul>{currentList}</ul>
+          <ul className="item-list">{currentList}</ul>
         </>
       )}
     </div>
