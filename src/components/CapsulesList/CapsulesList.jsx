@@ -27,11 +27,9 @@ const CapsulesList = ({ currentUser, capsules, openDetailsPage }) => {
       >
         <img src="../assets/capsule_icon.jpg" alt="Capsule icon" />
         <div>
-          <h3>{capsule.recipient}</h3>
-          <p>{capsule.status}</p>
-          <p>
-            {capsule.items.length} Item{capsule.items.length > 1 ? "s" : ""}
-          </p>
+          <h3>To: {capsule.recipient}</h3>
+          <p>Status: {capsule.status}</p>
+          <p>Release Date: {capsule.releaseDate}</p>
         </div>
       </button>
     </li>
@@ -45,11 +43,9 @@ const CapsulesList = ({ currentUser, capsules, openDetailsPage }) => {
       >
         <img src="../assets/capsule_icon.jpg" alt="Capsule icon" />
         <div>
-          <h3>{capsule.recipient}</h3>
-          <p>{capsule.status}</p>
-          <p>
-            {capsule.items.length} Item{capsule.items.length === 0 ? "s" : ""}
-          </p>
+          <h3>From: {capsule.sender}</h3>
+          <p>Status: {capsule.status}</p>
+          <p>Release Date: {capsule.releaseDate} </p>
         </div>
       </button>
     </li>

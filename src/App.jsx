@@ -25,7 +25,7 @@ const App = () => {
     if (token) {
       axios
         .get(`${import.meta.env.VITE_BACK_END_SERVER_URL}/users/profile`, {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `Bearer ${token}` }
         })
         .then((response) => {
           console.log("Profile fetch response:", response.data)
@@ -71,7 +71,7 @@ const App = () => {
       sealDate: capsule.sealDate ? capsule.sealDate.split("T")[0] : null,
       releaseDate: capsule.releaseDate
         ? capsule.releaseDate.split("T")[0]
-        : null,
+        : null
     }
     console.log("Still selected (prepared):", preparedCapsule)
     setSelectedCapsule(preparedCapsule)
@@ -171,7 +171,7 @@ const App = () => {
                 setSelectedCapsule={setSelectedCapsule}
                 updateSelectedCapsule={updateSelectedCapsule}
                 setCapsules={setCapsules}
-                openDetailsPage={openDetailsPage}
+                currentUser={user}
               />
             }
           />
