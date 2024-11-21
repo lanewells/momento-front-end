@@ -262,6 +262,7 @@ button.menu-item:hover {
   display: flex;
   flex-direction: column;
   gap: 15px;
+  background-color: #FFF8E7;
 }
 
 .item-list-item {
@@ -388,6 +389,10 @@ button.menu-item:hover {
 
 .item-list-delete:hover {
   background-color: #B71C1C;
+}
+
+.clickable-area{
+  background-color: #FFF8E7;
 }
 
 @media (max-width: 768px) {
