@@ -1,14 +1,15 @@
 import { useState, useEffect } from "react"
-import capsuleService from "../../services/capsuleService"
+import { useNavigate } from "react-router-dom"
 import "./CapsulesList.css"
 
-const CapsulesList = ({
-  currentUser,
-  capsules,
-  handleCapsuleFormView,
-  openDetailsPage
-}) => {
+const CapsulesList = ({ currentUser, capsules, openDetailsPage }) => {
   const [selectedType, setSelectedType] = useState("outgoing")
+
+  const navigate = useNavigate()
+
+  const handleCreateButton = () => {
+    navigate(`/capsule-form/new/${currentUser.id}`)
+  }
 
   const handleTypeChange = (evt) => setSelectedType(evt.target.value)
 
@@ -60,7 +61,7 @@ const CapsulesList = ({
   return (
     <div>
       <h1>My Capsules</h1>
-      <button onClick={handleCapsuleFormView}>Create</button>
+      <button onClick={handleCreateButton}>Create</button>
 
       <div className="radio-buttons">
         <label htmlFor="outgoing">Outgoing</label>

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import { useParams, useNavigate } from "react-router-dom"
 import capsuleService from "../../services/capsuleService"
 
 const CapsuleForm = ({
@@ -6,25 +7,52 @@ const CapsuleForm = ({
   capsules,
   setCapsules,
   selectedCapsule,
-  setSelectedCapsule,
-  setCapsuleFormOpen
+  setSelectedCapsule
 }) => {
+  const { userId, capsuleId } = useParams()
+  const navigate = useNavigate()
+
   const initialState = {
-    sender: currentUser.id,
+    sender: userId || currentUser?.id,
     recipient: "",
     sealDate: "",
     releaseDate: "",
-    status: "",
+    status: "pending seal",
     items: []
   }
 
   const [formData, setFormData] = useState(initialState)
 
   useEffect(() => {
-    if (selectedCapsule) {
-      setFormData(selectedCapsule)
+    const fetchCapsuleIfNeeded = async () => {
+      if (
+        capsuleId &&
+        (!selectedCapsule || selectedCapsule._id !== capsuleId)
+      ) {
+        try {
+          console.log("Fetching capsule with ID:", capsuleId)
+          const capsule = await capsuleService.getCapsuleById(capsuleId)
+          setSelectedCapsule(capsule)
+
+          setFormData({
+            ...capsule,
+            sealDate: capsule.sealDate?.split("T")[0] || "",
+            releaseDate: capsule.releaseDate?.split("T")[0] || ""
+          })
+        } catch (error) {
+          console.error("Error fetching capsule:", error)
+        }
+      } else if (selectedCapsule) {
+        setFormData({
+          ...selectedCapsule,
+          sealDate: selectedCapsule.sealDate?.split("T")[0] || "",
+          releaseDate: selectedCapsule.releaseDate?.split("T")[0] || ""
+        })
+      }
     }
-  }, [selectedCapsule])
+
+    fetchCapsuleIfNeeded()
+  }, [capsuleId, selectedCapsule, setSelectedCapsule])
 
   const handleChange = (evt) => {
     setFormData({ ...formData, [evt.target.name]: evt.target.value })
@@ -32,45 +60,33 @@ const CapsuleForm = ({
 
   const handleAddCapsule = async (formData) => {
     try {
+      console.log("Creating capsule with data:", formData)
       const newCapsule = await capsuleService.createCapsule(formData)
-
-      if (newCapsule.error) {
-        throw new Error(newCapsule.error)
-      }
-
       setCapsules([newCapsule, ...capsules])
-      setCapsuleFormOpen(false)
+      console.log("New capsule created:", newCapsule)
+      setFormData(initialState)
+      navigate(`/capsules-list/${currentUser.id}`)
     } catch (error) {
-      console.log(error)
+      console.error("Error creating capsule:", error)
+      alert("Failed to create capsule. Please try again!")
     }
   }
 
   const handleUpdateCapsule = async (id, formData) => {
     try {
-      console.log("Updating capsule with id:", id)
-      console.log("Form data:", formData)
-
+      console.log("Updating capsule with ID:", id)
       const updatedCapsule = await capsuleService.updateCapsule(id, formData)
-
-      if (updatedCapsule.error) {
-        throw new Error(updatedCapsule.error)
-      }
-
-      console.log("Updated capsule:", updatedCapsule)
-
       setCapsules((prevCapsules) =>
         prevCapsules.map((capsule) =>
           capsule._id === id ? updatedCapsule : capsule
         )
       )
-
       setSelectedCapsule(updatedCapsule)
-
-      console.log("Capsule updated successfully!")
+      console.log("Capsule updated successfully:", updatedCapsule)
       return updatedCapsule
     } catch (error) {
-      console.error("Failed to update capsule:", error)
-      throw error
+      console.error("Error updating capsule:", error)
+      alert("Failed to update capsule. Please try again!")
     }
   }
 
@@ -91,39 +107,43 @@ const CapsuleForm = ({
         : null,
       releaseDate: formData.releaseDate
         ? new Date(formData.releaseDate).toISOString()
-        : null,
-      status: "pending seal"
+        : null
+      // status: "pending seal"
     }
 
+    console.log("Submitting data:", formattedData)
+
     try {
-      if (selectedCapsule) {
+      if (capsuleId) {
         const updatedCapsule = await handleUpdateCapsule(
-          formData._id,
+          capsuleId,
           formattedData
         )
         setFormData(updatedCapsule)
       } else {
         await handleAddCapsule(formattedData)
-        setFormData(initialState)
       }
-      setCapsuleFormOpen(false)
+      navigate(`/capsules-list/${currentUser.id}`)
     } catch (error) {
-      console.error("Error submitting create capsule form:", error)
-      alert("Womp, womp. Something went wrong. Please try again!")
+      console.error("Error submitting capsule form:", error)
     }
+  }
+
+  const handleCancel = () => {
+    console.log("Canceling form...")
+    setSelectedCapsule(null)
+    navigate(`/capsules-list/${currentUser.id}`)
   }
 
   return (
     <>
-      <h1>
-        {selectedCapsule ? "Edit Existing Capsule" : "Create a New Capsule"}
-      </h1>
+      <h1>{capsuleId ? "Edit Existing Capsule" : "Create a New Capsule"}</h1>
       <form onSubmit={handleSubmitForm}>
         <label htmlFor="sender">Sender</label>
         <input
           id="sender"
           name="sender"
-          value={formData.sender || currentUser.id}
+          value={formData.sender || currentUser?.id || ""}
           readOnly
         />
 
@@ -150,7 +170,7 @@ const CapsuleForm = ({
           id="releaseDate"
           name="releaseDate"
           type="date"
-          value={formData.releaseDate}
+          value={formData.releaseDate || ""}
           onChange={handleChange}
         />
 
@@ -158,26 +178,21 @@ const CapsuleForm = ({
         <input
           id="items"
           name="items"
-          value={formData.items ? formData.items.join(",") : []}
+          value={formData.items ? formData.items.join(",") : ""}
           onChange={(evt) =>
             setFormData({ ...formData, items: evt.target.value.split(",") })
           }
         />
 
         <button type="submit">
-          {selectedCapsule ? "Save Changes" : "Create Capsule"}
+          {capsuleId ? "Save Changes" : "Create Capsule"}
         </button>
-        <button
-          type="button"
-          onClick={() => {
-            setSelectedCapsule(null)
-            setCapsuleFormOpen(false)
-          }}
-        >
+        <button type="button" onClick={handleCancel}>
           Cancel
         </button>
       </form>
     </>
   )
 }
+
 export default CapsuleForm

@@ -23,6 +23,7 @@ const getCapsuleById = async (id) => {
 
 const createCapsule = async (capsuleData) => {
   try {
+    console.log("Sending POST request with data:", capsuleData)
     const response = await axios.post(API_URL, capsuleData)
     return response.data
   } catch (error) {
@@ -43,7 +44,8 @@ const updateCapsule = async (id, capsuleData) => {
 
 const deleteCapsule = async (id) => {
   try {
-    await axios.delete(`${API_URL}${id}:`)
+    const response = await axios.delete(`${API_URL}/${id}`)
+    return response.data
   } catch (error) {
     console.error(`Error deleting capsule with id ${id}`, error)
     throw error
