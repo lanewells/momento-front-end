@@ -20,14 +20,11 @@ const CapsuleDetail = ({
       sealDate: new Date().toISOString(),
     }
 
-    console.log("Locking capsule with data:", updatedData)
-
     try {
       const response = await capsuleService.updateCapsule(
         selectedCapsule._id,
         updatedData
       )
-      console.log("Capsule locked successfully:", response)
       setSelectedCapsule(response)
     } catch (error) {
       console.error("Error locking capsule:", error)
@@ -61,7 +58,6 @@ const CapsuleDetail = ({
           selectedCapsule._id,
           { status: "released" }
         )
-        console.log("Capsule auto-released:", updatedCapsule)
         setSelectedCapsule(updatedCapsule)
         setCapsules((prevCapsules) =>
           prevCapsules.map((capsule) =>
@@ -78,7 +74,6 @@ const CapsuleDetail = ({
     const fetchCapsule = async () => {
       if (!selectedCapsule || selectedCapsule._id !== capsuleId) {
         try {
-          console.log("Fetching capsule with ID:", capsuleId)
           const capsule = await capsuleService.getCapsuleById(capsuleId)
           setSelectedCapsule(capsule)
         } catch (error) {
@@ -108,7 +103,6 @@ const CapsuleDetail = ({
         prevCapsules.filter((capsule) => capsule._id !== id)
       )
       setSelectedCapsule(null)
-      console.log("Navigating to:", `/capsules-list/${currentUser.id}`)
       navigate(`/capsules-list/${currentUser.id}`)
     } catch (error) {
       console.error("Error deleting capsule:", error)

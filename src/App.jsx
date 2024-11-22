@@ -76,11 +76,7 @@ const App = () => {
   const openDetailsPage = (capsule) => {
     if (capsule._id) {
       updateSelectedCapsule(capsule)
-      console.log("Selected capsule:", selectedCapsule)
-      console.log("capsule:", capsule)
       navigate(`/capsule-detail/${capsule._id}`)
-    } else {
-      console.log("Error opening details page. No capsule id")
     }
   }
 
