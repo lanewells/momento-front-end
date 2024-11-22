@@ -35,15 +35,40 @@ Momento was created to mimic the functions of a time capsule, where users can cr
 3.  Create a Capsule: Add details, items, and lock your capsule when ready.
 4.  Wait for the Release Date: Your capsule will be unlocked and your recipient can open to see its contents!
 
+## User Stories Implemented
+
+1.  As a new user, I want to sign up with my email and create a secure password so that I can have a personalized account to access my capsules.
+2.  As a returning user, I want to sign in with my credentials so that I can securely access my account and stored capsules.
+3.  AAU, I want to log out securely so that my account and capsules remain private.
+4.  As a signed-in user, I want to create a new time capsule by adding a message and/or files so that I can preserve memories or thoughts to open in the future.
+5.  AAU, I want to set a release date for my capsule so that it remains locked until a specific time.
+6.  AAU, I want to view a list of all my time capsules so that I can keep track of what I've created and when they'll open.
+7.  AAU, I want to see a status (locked or available to open) next to each capsule so that I know which ones are ready to be opened.
+8.  AAU, I want to delete a capsule so that I can manage or remove messages I no longer want to keep.
+9.  AAU, I want to open a capsule and view its contents (message and files) once the release date has passed so that I can experience the memory I saved.
+10. AAU, I want an easy-to-navigate interface so that I can intuitively create, view and manage my capsules.
+
 ## Stretch Goals MET
+
+1.  Filtered views of Incoming and Outgoing capsules.
+2.  User option to pre-declare a seal date when creating or editing their capsule, making it easier to coordinate a group capsule for the future of the app.
+3.  Drop down menu of users to choose from by username.
+4.  Have a nav bar mobile-friendly so you can click on "view my capsules" and other links at any point.
+5.  Options for user to input birthday
+6.  View profile function.
 
 ## Stretch Goals Not Met...Yet?
 
-Release Date: Your recipient will be notified when the capsule unlocks!
-Group capsule
-A lot of other stuff probably
+1. Confirmation messages for every relevant function when user completes an action so that they know their actions were successful.
+2. Recipient will be notified when the capsule unlocks.
+3. Group capsule capabilities.
+4. The option to enter another person's email when creating a capsule so that users can gift the capsule to someone else.
+5. An “are you sure” double-checking system for pressing seal/lock button.
 
 ### Citations
+
+- [Font Awesome](https://fontawesome.com/search?o=r&s=solid&ip=sharp-duotone)
+  - Used for icon library
 
 #### Link to Back End GitHub Repository:
 
