@@ -34,6 +34,8 @@ const createCapsule = async (capsuleData) => {
 
 const updateCapsule = async (id, capsuleData) => {
   try {
+    console.log("Sending PUT request with data:", capsuleData)
+    console.log("ID:", id)
     const response = await axios.put(`${API_URL}/${id}`, capsuleData)
     return response.data
   } catch (error) {
