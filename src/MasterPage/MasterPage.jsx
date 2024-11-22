@@ -27,7 +27,14 @@ const MasterPage = ({ user, handleLogout }) => {
             <button onClick={() => navigate("/notifications")}>
               <i className="fa fa-bell"></i> Notifications
             </button>
-            <button onClick={handleLogout}>Logout</button>
+            <button
+              onClick={() => {
+                navigate(`/signin`)
+                handleLogout()
+              }}
+            >
+              Logout
+            </button>
           </div>
         </header>
       )}
