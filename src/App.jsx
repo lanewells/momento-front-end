@@ -73,13 +73,12 @@ const App = () => {
     setSelectedCapsule(preparedCapsule)
   }
 
-
-  const handleCapsuleFormView = (capsule) => {
-    if (!capsule._id) {
-      setSelectedCapsule(null)
-    }
-    setCapsuleFormOpen(!capsuleFormOpen)
-  }
+  // const handleCapsuleFormView = (capsule) => {
+  //   if (!capsule._id) {
+  //     setSelectedCapsule(null)
+  //   }
+  //   setCapsuleFormOpen(!capsuleFormOpen)
+  // }
   const openDetailsPage = (capsule) => {
     if (capsule._id) {
       updateSelectedCapsule(capsule)
@@ -89,7 +88,6 @@ const App = () => {
       navigate(`/capsule-detail/${capsule._id}`)
     } else {
       console.log("Error opening details page. No capsule id")
-
     }
   }
 
