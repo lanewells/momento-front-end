@@ -136,8 +136,6 @@ const CapsuleForm = ({
         status: formData.status,
       }
 
-      console.log("Formatted Data for Update:", formattedData)
-
       if (capsuleId) {
         await handleUpdateCapsule(capsuleId, formattedData)
       } else {
