@@ -171,7 +171,7 @@ const CapsuleForm = ({
         <input
           id="sender"
           name="sender"
-          value={formData.sender || currentUser?.id || ""}
+          value={formData.sender.username || currentUser?.id || ""}
           readOnly
         />
 

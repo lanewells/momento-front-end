@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import "./CapsulesList.css"
 
@@ -14,11 +14,13 @@ const CapsulesList = ({ currentUser, capsules, openDetailsPage }) => {
   const handleTypeChange = (evt) => setSelectedType(evt.target.value)
 
   const capsulesOutgoingFiltered = capsules.filter(
-    (capsule) => capsule.sender === currentUser.id
+    (capsule) => capsule.sender && capsule.sender._id === currentUser.id
   )
+
   const capsulesIncomingFiltered = capsules.filter(
-    (capsule) => capsule.recipient === currentUser.id
+    (capsule) => capsule.recipient && capsule.recipient._id === currentUser.id
   )
+
   const capsulesOutgoing = capsulesOutgoingFiltered.map((capsule) => (
     <li key={capsule._id}>
       <button
@@ -32,9 +34,11 @@ const CapsulesList = ({ currentUser, capsules, openDetailsPage }) => {
             alt="Capsule icon"
           />
           <div className="text-capsule">
-            <h3>To: {capsule.recipient}</h3>
+            <h3>To: {capsule.recipient?.username || "Unknown Recipient"}</h3>
             <p>Status: {capsule.status}</p>
-            <p>Release Date: {capsule.releaseDate}</p>
+            <p>
+              Release Date: {new Date(capsule.releaseDate).toLocaleDateString()}
+            </p>
           </div>
         </div>
       </button>
@@ -48,16 +52,17 @@ const CapsulesList = ({ currentUser, capsules, openDetailsPage }) => {
         onClick={() => openDetailsPage(capsule)}
       >
         <div className="container-capsule">
-          {" "}
           <img
             src="../src/assets/capsule_bkg_cream.png"
             className="image-capsule"
             alt="Capsule icon"
           />
           <div className="text-capsule">
-            <h3>From: {capsule.sender}</h3>
+            <h3>From: {capsule.sender?.username || "Unknown Sender"}</h3>
             <p>Status: {capsule.status}</p>
-            <p>Release Date: {capsule.releaseDate} </p>
+            <p>
+              Release Date: {new Date(capsule.releaseDate).toLocaleDateString()}
+            </p>
           </div>
         </div>
       </button>
