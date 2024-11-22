@@ -15,13 +15,11 @@ const MasterPage = ({ user, handleLogout }) => {
         <header>
           <div className="logo">
             <img src="../src/assets/capsule_bkg_orange.png" alt="Logo" />
-            <span>Momento In Time</span>
+            <span>Momento<br /> In Time</span>
           </div>
           <div className="links-right">
+            <button onClick={() => navigate("/notifications")}><i className="fa fa-bell"></i> Notifications</button>
             <button onClick={handleLogout}>Logout</button>
-            <button onClick={() => navigate("/notifications")}>
-              Notifications
-            </button>
           </div>
         </header>
       )}
