@@ -14,7 +14,7 @@ const MasterPage = ({ user, handleLogout }) => {
       {!hideHeaderFooter && (
         <header>
           <div className="logo">
-            <img src="../src/assets/capsule_bkg_orange.png" alt="Logo" />
+            <img src="../src/assets/capsule_bkg_orange.png" alt="Momento In Time Logo" />
             <span>Momento<br /> In Time</span>
           </div>
           <div className="links-right">
