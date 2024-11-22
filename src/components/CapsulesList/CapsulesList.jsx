@@ -64,7 +64,7 @@ const CapsulesList = ({ currentUser, capsules, openDetailsPage }) => {
     <div className="item-list-container">
       <div className="item-list-header">
         <h2 className="item-list-heading">My Capsules</h2>
-        <button  onClick={handleCreateButton} className="item-list-add-button">
+        <button onClick={handleCreateButton} className="item-list-add-button">
           Add New Capsule
         </button>
       </div>
