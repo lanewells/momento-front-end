@@ -1,18 +1,106 @@
-.clickable-area {
-  all: unset;
-  display: block;
-  width: 100%;
-  text-align: left;
-  cursor: pointer;
-  padding: 15px;
-  background-color: #fff8e7;
-  border: 1px solid #f5a623;
-  border-radius: 4px;
-  transition: box-shadow 0.3s ease;
-}
-.clickable-area:hover {
-  background-color: #f0f0f0;
-}
-.clickable-area:focus {
-  outline: 2px solid #007bff;
+.capsules-list-container {
+  .capsule-tabs {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+
+  .tab {
+    flex: 1;
+    padding: 8px 12px;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #f5a623;
+    border-bottom: none;
+    background: #fff8e7;
+    color: #2c2c54;
+    border-radius: 6px 6px 0 0;
+    font-size: 14px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  .tab:hover {
+    background-color: #f8e2a8;
+  }
+
+  .active-tab {
+    background: #fff;
+    font-weight: bold;
+    border-top: 2px solid #f5a623;
+    color: #f5a623;
+  }
+
+  .clickable-area {
+    all: unset;
+    display: block;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    padding: 12px;
+    background-color: #fff8e7;
+    border: 1px solid #f5a623;
+    border-radius: 6px;
+    transition: box-shadow 0.3s ease, background-color 0.3s ease;
+    margin-bottom: 8px;
+  }
+
+  .clickable-area:hover {
+    background-color: #f0f0f0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .container-capsule {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background-color: inherit;
+  }
+
+  .image-capsule {
+    width: 40px;
+    height: auto;
+  }
+
+  .text-capsule {
+    flex: 1;
+  }
+
+  .text-capsule h3 {
+    margin: 0;
+    font-size: 16px;
+    color: #2c2c54;
+  }
+
+  .text-capsule p {
+    margin: 4px 0;
+    color: #2c2c54;
+    font-size: 12px;
+  }
+
+  .item-list-container {
+    padding-bottom: 60px;
+  }
+
+  @media (max-width: 768px) {
+    .capsule-tabs {
+      margin-bottom: 0.5rem;
+    }
+
+    .tab {
+      font-size: 12px;
+      padding: 6px 10px;
+    }
+
+    .clickable-area {
+      padding: 10px;
+    }
+
+    .text-capsule h3 {
+      font-size: 14px;
+    }
+
+    .text-capsule p {
+      font-size: 10px;
+    }
+  }
 }
