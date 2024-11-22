@@ -37,6 +37,7 @@ const CapsuleForm = ({
 
           setFormData({
             ...capsule,
+            recipient: capsule.recipient._id || "",
             sealDate: capsule.sealDate?.split("T")[0] || "",
             releaseDate: capsule.releaseDate?.split("T")[0] || "",
           })
@@ -46,11 +47,14 @@ const CapsuleForm = ({
       } else if (selectedCapsule) {
         setFormData({
           ...selectedCapsule,
+          recipient: selectedCapsule.recipient._id || "",
           sealDate: selectedCapsule.sealDate?.split("T")[0] || "",
           releaseDate: selectedCapsule.releaseDate?.split("T")[0] || "",
         })
       }
     }
+
+    fetchCapsuleIfNeeded()
 
     const fetchUsernames = async () => {
       try {
@@ -65,12 +69,12 @@ const CapsuleForm = ({
           }
         )
         setUsernames(response.data)
+        console.log("Usernames fetched:", response.data)
       } catch (error) {
         console.error("Error fetching usernames:", error)
       }
     }
 
-    fetchCapsuleIfNeeded()
     fetchUsernames()
   }, [capsuleId, selectedCapsule, setSelectedCapsule])
 
@@ -144,7 +148,12 @@ const CapsuleForm = ({
       navigate(`/capsules-list/${currentUser.id}`)
     } catch (error) {
       console.error("Error submitting capsule form:", error)
-      alert("An error occurred. Please try again.")
+      if (error.response) {
+        console.error("Error response data:", error.response.data)
+        alert(`An error occurred: ${error.response.data.error}`)
+      } else {
+        alert("An error occurred. Please try again.")
+      }
     }
   }
 
@@ -175,7 +184,7 @@ const CapsuleForm = ({
         >
           <option value="">Select a recipient</option>
           {usernames.map((user) => (
-            <option key={user._id} value={user.username}>
+            <option key={user._id} value={user._id}>
               {user.username}
             </option>
           ))}
