@@ -23,7 +23,6 @@ const getCapsuleById = async (id) => {
 
 const createCapsule = async (capsuleData) => {
   try {
-    console.log("Sending POST request with data:", capsuleData)
     const response = await axios.post(API_URL, capsuleData)
     return response.data
   } catch (error) {
