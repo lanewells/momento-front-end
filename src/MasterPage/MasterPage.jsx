@@ -14,11 +14,19 @@ const MasterPage = ({ user, handleLogout }) => {
       {!hideHeaderFooter && (
         <header>
           <div className="logo">
-            <img src="../src/assets/capsule_bkg_orange.png" alt="Momento In Time Logo" />
-            <span>Momento<br /> In Time</span>
+            <img
+              src="../src/assets/capsule_bkg_orange.png"
+              alt="Momento In Time Logo"
+            />
+            <span>
+              Momento
+              <br /> In Time
+            </span>
           </div>
           <div className="links-right">
-            <button onClick={() => navigate("/notifications")}><i className="fa fa-bell"></i> Notifications</button>
+            <button onClick={() => navigate("/notifications")}>
+              <i className="fa fa-bell"></i> Notifications
+            </button>
             <button onClick={handleLogout}>Logout</button>
           </div>
         </header>
@@ -43,7 +51,7 @@ const MasterPage = ({ user, handleLogout }) => {
           </button>
           <button
             className="menu-item"
-            onClick={() => navigate(`/capsule-form/new/${user.id}`)}
+            onClick={() => navigate(`/capsules-list/${user.id}`)}
           >
             <i className="fa fa-plus-circle"></i>
             <span>Create Capsule</span>

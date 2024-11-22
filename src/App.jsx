@@ -27,7 +27,7 @@ const App = () => {
     if (token) {
       axios
         .get(`${import.meta.env.VITE_BACK_END_SERVER_URL}/users/profile`, {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `Bearer ${token}` }
         })
         .then((response) => {
           setUser(response.data.user || response.data)
@@ -70,7 +70,7 @@ const App = () => {
       sealDate: capsule.sealDate ? capsule.sealDate.split("T")[0] : null,
       releaseDate: capsule.releaseDate
         ? capsule.releaseDate.split("T")[0]
-        : null,
+        : null
     }
     setSelectedCapsule(preparedCapsule)
   }
@@ -92,7 +92,10 @@ const App = () => {
   return (
     <>
       <Routes>
-        <Route path="/" element={<MasterPage />}>
+        <Route
+          path="/"
+          element={<MasterPage user={user} handleLogout={handleLogout} />}
+        >
           <Route
             index
             element={
