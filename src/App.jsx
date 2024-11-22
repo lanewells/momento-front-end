@@ -28,7 +28,6 @@ const App = () => {
           headers: { Authorization: `Bearer ${token}` }
         })
         .then((response) => {
-          console.log("Profile fetch response:", response.data)
           setUser(response.data.user || response.data)
         })
         .catch(() => localStorage.removeItem("token"))
@@ -36,13 +35,11 @@ const App = () => {
   }, [])
 
   const handleSignup = (userData) => {
-    console.log("User data after signup:", userData)
     setUser(userData.user || userData)
     localStorage.setItem("token", userData.token)
   }
 
   const handleSignin = (userData) => {
-    console.log("User data after signin:", userData)
     setUser(userData.user || userData)
     localStorage.setItem("token", userData.token)
   }
@@ -73,26 +70,36 @@ const App = () => {
         ? capsule.releaseDate.split("T")[0]
         : null
     }
-    console.log("Still selected (prepared):", preparedCapsule)
     setSelectedCapsule(preparedCapsule)
   }
 
+
+  const handleCapsuleFormView = (capsule) => {
+    if (!capsule._id) {
+      setSelectedCapsule(null)
+    }
+    setCapsuleFormOpen(!capsuleFormOpen)
+  }
   const openDetailsPage = (capsule) => {
     if (capsule._id) {
-      console.log("Capsule id:", capsule._id)
-      console.log("Now selected for detail viewing:", capsule)
-
       updateSelectedCapsule(capsule)
+
+      setOpenDetails(!openDetails)
+
       navigate(`/capsule-detail/${capsule._id}`)
     } else {
       console.log("Error opening details page. No capsule id")
+
     }
   }
 
   return (
     <>
       <Routes>
-        <Route path="/" element={<MasterPage />}>
+        <Route
+          path="/"
+          element={<MasterPage user={user} handleLogout={handleLogout} />}
+        >
           <Route
             index
             element={
