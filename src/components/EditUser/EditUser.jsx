@@ -75,10 +75,12 @@ const EditUser = ({ user, onUserUpdate }) => {
             required
           />
         </div>
-        <button type="submit">Update</button>
-        <button type="button" onClick={handleCancel}>
-          Cancel
-        </button>
+        <div className="button-margin">
+          <button type="submit">Update</button>
+          <button type="button" onClick={handleCancel}>
+            Cancel
+          </button>
+        </div>
       </form>
     </div>
   )

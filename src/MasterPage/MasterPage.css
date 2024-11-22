@@ -147,6 +147,7 @@ form input[type="password"],
 form input[type="number"],
 form input[type="tel"],
 form input[type="url"],
+form input[type="date"],
 form select,
 form textarea {
   width: 100%;
@@ -390,6 +391,10 @@ button.menu-item:hover {
 
 .clickable-area{
   background-color: #FFF8E7;
+}
+
+.button-margin{
+  margin-top: 15px;
 }
 
 @media (max-width: 768px) {
