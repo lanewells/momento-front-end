@@ -28,11 +28,7 @@ const App = () => {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
-          const userData = response.data.user || response.data
-          if (!userData.id && userData._id) {
-            userData.id = userData._id
-          }
-          setUser(userData)
+          setUser(response.data.user || response.data)
         })
         .catch(() => localStorage.removeItem("token"))
     }
@@ -80,6 +76,8 @@ const App = () => {
   const openDetailsPage = (capsule) => {
     if (capsule._id) {
       updateSelectedCapsule(capsule)
+      console.log("Selected capsule:", selectedCapsule)
+      console.log("capsule:", capsule)
       navigate(`/capsule-detail/${capsule._id}`)
     } else {
       console.log("Error opening details page. No capsule id")
@@ -124,17 +122,13 @@ const App = () => {
           <Route
             path="/capsules-list/:userId"
             element={
-              user ? (
-                <CapsulesList
-                  currentUser={user}
-                  capsules={capsules}
-                  setCapsules={setCapsules}
-                  setSelectedCapsule={setSelectedCapsule}
-                  openDetailsPage={openDetailsPage}
-                />
-              ) : (
-                <Navigate to="/signin" replace />
-              )
+              <CapsulesList
+                currentUser={user}
+                capsules={capsules}
+                setCapsules={setCapsules}
+                setSelectedCapsule={setSelectedCapsule}
+                openDetailsPage={openDetailsPage}
+              />
             }
           />
           <Route

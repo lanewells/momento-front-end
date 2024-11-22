@@ -70,6 +70,7 @@ const Profile = ({ handleLogout }) => {
         <strong>Birth Date:</strong> {user.birthDate.split("T")[0]}
       </p>
 
+      <button onClick={() => navigate("/dashboard")}>Back to Dashboard</button>
       <button onClick={handleEditAccount}>Edit Account</button>
       <button onClick={handleDeleteAccount}>Delete Account</button>
     </div>
