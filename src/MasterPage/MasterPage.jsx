@@ -15,7 +15,7 @@ const MasterPage = ({ user, handleLogout }) => {
         <header>
           <div className="logo">
             <img
-              src="../src/assets/capsule_bkg_orange.png"
+              src="/assets/capsule_bkg_orange.png"
               alt="Momento In Time Logo"
             />
             <span>
