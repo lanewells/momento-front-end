@@ -51,7 +51,7 @@ const MasterPage = ({ user, handleLogout }) => {
           </button>
           <button
             className="menu-item"
-            onClick={() => navigate(`/capsules-list/${user.id}`)}
+            onClick={() => navigate(`/capsule-form/new/${user.id}`)}
           >
             <i className="fa fa-plus-circle"></i>
             <span>Create Capsule</span>
