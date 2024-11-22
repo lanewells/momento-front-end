@@ -24,7 +24,3 @@ dist-ssr
 *.sw?
 .env
 
-
-src/components/ItemForm/ItemForm2.jsx
-src/components/ItemForm/images.jsx
-src/components/ItemForm/ItemListOLD.jsx

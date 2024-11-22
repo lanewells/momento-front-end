@@ -47,19 +47,15 @@ header {
 
 .links-right {
   display: flex;
-  flex-direction: column;
   align-items: flex-end;
   gap: 5px;
 }
 
-.links-right a {
+.links-right button {
   text-decoration: none;
-  color: #2c2c54;
+  color: #fff;
   font-size: 14px;
-}
-
-.links-right a:hover {
-  text-decoration: underline;
+  background-color: #2c2c54;
 }
 
 .master-page-content {
@@ -68,7 +64,7 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 50px;
+  margin-bottom: 130px;
 }
 
 .dashboard-main {
@@ -189,6 +185,7 @@ form input[type="button"] {
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  margin-left: 12px;
 }
 
 form button:hover,
@@ -243,7 +240,6 @@ button.menu-item:hover {
   background-color: #faf3e0;
   border-radius: 8px;
   box-sizing: border-box;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   justify-content: center;
 }
 
@@ -263,6 +259,7 @@ button.menu-item:hover {
   display: flex;
   flex-direction: column;
   gap: 15px;
+  background-color: #FFF8E7;
 }
 
 .item-list-item {
@@ -389,6 +386,10 @@ button.menu-item:hover {
 
 .item-list-delete:hover {
   background-color: #b71c1c;
+}
+
+.clickable-area{
+  background-color: #FFF8E7;
 }
 
 @media (max-width: 768px) {
