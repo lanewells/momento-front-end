@@ -31,7 +31,6 @@ const CapsuleForm = ({
         (!selectedCapsule || selectedCapsule._id !== capsuleId)
       ) {
         try {
-          console.log("Fetching capsule with ID:", capsuleId)
           const capsule = await capsuleService.getCapsuleById(capsuleId)
           setSelectedCapsule(capsule)
 
@@ -59,7 +58,6 @@ const CapsuleForm = ({
     const fetchUsernames = async () => {
       try {
         const token = localStorage.getItem("token")
-        console.log("Token:", token)
         const response = await axios.get(
           `${import.meta.env.VITE_BACK_END_SERVER_URL}/users/usernames`,
           {
@@ -69,7 +67,6 @@ const CapsuleForm = ({
           }
         )
         setUsernames(response.data)
-        console.log("Usernames fetched:", response.data)
       } catch (error) {
         console.error("Error fetching usernames:", error)
       }
@@ -84,10 +81,8 @@ const CapsuleForm = ({
 
   const handleAddCapsule = async (formData) => {
     try {
-      console.log("Creating capsule with data:", formData)
       const newCapsule = await capsuleService.createCapsule(formData)
       setCapsules([newCapsule, ...capsules])
-      console.log("New capsule created:", newCapsule)
       setFormData(initialState)
       navigate(`/capsules-list/${currentUser.id}`)
     } catch (error) {
@@ -98,7 +93,6 @@ const CapsuleForm = ({
 
   const handleUpdateCapsule = async (id, formData) => {
     try {
-      console.log("Updating capsule with ID:", id)
       const updatedCapsule = await capsuleService.updateCapsule(id, formData)
       setCapsules((prevCapsules) =>
         prevCapsules.map((capsule) =>
@@ -106,7 +100,6 @@ const CapsuleForm = ({
         )
       )
       setSelectedCapsule(updatedCapsule)
-      console.log("Capsule updated successfully:", updatedCapsule)
       return updatedCapsule
     } catch (error) {
       console.error("Error updating capsule:", error)
@@ -158,7 +151,6 @@ const CapsuleForm = ({
   }
 
   const handleCancel = () => {
-    console.log("Canceling form...")
     setSelectedCapsule(null)
     navigate(`/capsules-list/${currentUser.id}`)
   }
