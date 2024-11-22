@@ -19,7 +19,9 @@ const MasterPage = ({ user, handleLogout }) => {
           </div>
           <div className="links-right">
             <button onClick={handleLogout}>Logout</button>
-            <a href="/notifications">Notifications</a>
+            <button onClick={() => navigate("/notifications")}>
+              Notifications
+            </button>
           </div>
         </header>
       )}
