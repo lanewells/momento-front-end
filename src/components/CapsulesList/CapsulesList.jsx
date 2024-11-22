@@ -20,7 +20,7 @@ const CapsulesList = ({ currentUser, capsules, openDetailsPage }) => {
     (capsule) => capsule.recipient === currentUser.id
   )
   const capsulesOutgoing = capsulesOutgoingFiltered.map((capsule) => (
-    <li className="item-list-item" key={capsule._id}>
+    <li key={capsule._id}>
       <button
         className="clickable-area"
         onClick={() => openDetailsPage(capsule)}
@@ -47,11 +47,18 @@ const CapsulesList = ({ currentUser, capsules, openDetailsPage }) => {
         className="clickable-area"
         onClick={() => openDetailsPage(capsule)}
       >
-        <img src="../assets/capsule_icon.jpg" alt="Capsule icon" />
-        <div>
-          <h3>From: {capsule.sender}</h3>
-          <p>Status: {capsule.status}</p>
-          <p>Release Date: {capsule.releaseDate} </p>
+        <div className="container-capsule">
+          {" "}
+          <img
+            src="../src/assets/capsule_bkg_cream.png"
+            className="image-capsule"
+            alt="Capsule icon"
+          />
+          <div className="text-capsule">
+            <h3>From: {capsule.sender}</h3>
+            <p>Status: {capsule.status}</p>
+            <p>Release Date: {capsule.releaseDate} </p>
+          </div>
         </div>
       </button>
     </li>
