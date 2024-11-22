@@ -120,7 +120,6 @@ const CapsuleDetail = ({
         Return to Capsules
       </button>
       <h1>Capsule Details</h1>
-      <img src="../assets/capsule_icon.jpg" alt="Capsule Icon" />
 
       <h3>
         {selectedCapsule.recipient === selectedCapsule.sender

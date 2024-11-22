@@ -24,7 +24,7 @@ const CapsulesList = ({ currentUser, capsules, openDetailsPage }) => {
       >
         <div className="container-capsule">
           <img
-            src="../src/assets/capsule_bkg_cream.png"
+            src="../assets/capsule_bkg_cream.png"
             className="image-capsule"
             alt="Capsule icon"
           />
@@ -46,7 +46,7 @@ const CapsulesList = ({ currentUser, capsules, openDetailsPage }) => {
       >
         <div className="container-capsule">
           <img
-            src="../src/assets/capsule_bkg_cream.png"
+            src="../assets/capsule_bkg_cream.png"
             className="image-capsule"
             alt="Capsule icon"
           />
