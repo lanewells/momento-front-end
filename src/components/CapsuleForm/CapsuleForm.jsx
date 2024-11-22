@@ -14,7 +14,7 @@ const CapsuleForm = ({
   const navigate = useNavigate()
 
   const initialState = {
-    sender: userId || currentUser?.id,
+    sender: currentUser?.id,
     recipient: "",
     sealDate: "",
     releaseDate: "",
@@ -35,20 +35,22 @@ const CapsuleForm = ({
           setSelectedCapsule(capsule)
 
           setFormData({
-            ...capsule,
+            sender: capsule.sender._id || currentUser?.id,
             recipient: capsule.recipient._id || "",
             sealDate: capsule.sealDate?.split("T")[0] || "",
             releaseDate: capsule.releaseDate?.split("T")[0] || "",
+            status: capsule.status,
           })
         } catch (error) {
           console.error("Error fetching capsule:", error)
         }
       } else if (selectedCapsule) {
         setFormData({
-          ...selectedCapsule,
+          sender: selectedCapsule.sender._id || currentUser?.id,
           recipient: selectedCapsule.recipient._id || "",
           sealDate: selectedCapsule.sealDate?.split("T")[0] || "",
           releaseDate: selectedCapsule.releaseDate?.split("T")[0] || "",
+          status: selectedCapsule.status,
         })
       }
     }
@@ -73,7 +75,7 @@ const CapsuleForm = ({
     }
 
     fetchUsernames()
-  }, [capsuleId, selectedCapsule, setSelectedCapsule])
+  }, [capsuleId, selectedCapsule, setSelectedCapsule, currentUser])
 
   const handleChange = (evt) => {
     setFormData({ ...formData, [evt.target.name]: evt.target.value })
@@ -104,6 +106,7 @@ const CapsuleForm = ({
     } catch (error) {
       console.error("Error updating capsule:", error)
       alert("Failed to update capsule. Please try again!")
+      throw error
     }
   }
 
@@ -111,9 +114,7 @@ const CapsuleForm = ({
     evt.preventDefault()
 
     if (!formData.releaseDate) {
-      alert(
-        "Please select a release date for your capsule. Don't worry, you can change it later!"
-      )
+      alert("Please select a release date for your capsule.")
       return
     }
 
@@ -124,26 +125,31 @@ const CapsuleForm = ({
 
     try {
       const formattedData = {
-        ...formData,
+        sender: formData.sender,
+        recipient: formData.recipient,
         sealDate: formData.sealDate
           ? new Date(formData.sealDate).toISOString()
           : null,
         releaseDate: formData.releaseDate
           ? new Date(formData.releaseDate).toISOString()
           : null,
+        status: formData.status,
       }
+
+      console.log("Formatted Data for Update:", formattedData)
 
       if (capsuleId) {
         await handleUpdateCapsule(capsuleId, formattedData)
       } else {
         await handleAddCapsule(formattedData)
       }
+
       navigate(`/capsules-list/${currentUser.id}`)
     } catch (error) {
       console.error("Error submitting capsule form:", error)
-      if (error.response) {
-        console.error("Error response data:", error.response.data)
-        alert(`An error occurred: ${error.response.data.error}`)
+      if (error.response && error.response.data) {
+        console.error("Backend Error:", error.response.data)
+        alert(`Failed to update capsule: ${error.response.data.error}`)
       } else {
         alert("An error occurred. Please try again.")
       }
@@ -159,13 +165,8 @@ const CapsuleForm = ({
     <>
       <h1>{capsuleId ? "Edit Existing Capsule" : "Create a New Capsule"}</h1>
       <form onSubmit={handleSubmitForm}>
-        <label htmlFor="sender">Sender</label>
-        <input
-          id="sender"
-          name="sender"
-          value={formData.sender.username || currentUser?.id || ""}
-          readOnly
-        />
+        <label>Sender</label>
+        <span>{currentUser?.username || "Unknown Sender"}</span>
 
         <label htmlFor="recipient">Recipient</label>
         <select
