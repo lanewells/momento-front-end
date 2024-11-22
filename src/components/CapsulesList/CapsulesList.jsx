@@ -20,8 +20,11 @@ const CapsulesList = ({ currentUser, capsules, openDetailsPage }) => {
     (capsule) => capsule.recipient === currentUser.id
   )
   const capsulesOutgoing = capsulesOutgoingFiltered.map((capsule) => (
-    <li className="clickable-area" key={capsule._id}>
-      <button onClick={() => openDetailsPage(capsule)}>
+    <li key={capsule._id}>
+      <button
+        className="clickable-area"
+        onClick={() => openDetailsPage(capsule)}
+      >
         <div className="container-capsule">
           <img
             src="../src/assets/capsule_bkg_cream.png"
@@ -39,8 +42,11 @@ const CapsulesList = ({ currentUser, capsules, openDetailsPage }) => {
   ))
 
   const capsulesIncoming = capsulesIncomingFiltered.map((capsule) => (
-    <li className="clickable-area" key={capsule._id}>
-      <button onClick={() => openDetailsPage(capsule)}>
+    <li key={capsule._id}>
+      <button
+        className="clickable-area"
+        onClick={() => openDetailsPage(capsule)}
+      >
         <div className="container-capsule">
           {" "}
           <img
