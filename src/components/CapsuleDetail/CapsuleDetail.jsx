@@ -8,7 +8,7 @@ const CapsuleDetail = ({
   setSelectedCapsule,
   updateSelectedCapsule,
   setCapsules,
-  currentUser
+  currentUser,
 }) => {
   const { capsuleId } = useParams()
   const navigate = useNavigate()
