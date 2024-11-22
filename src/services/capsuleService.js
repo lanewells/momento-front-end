@@ -23,7 +23,6 @@ const getCapsuleById = async (id) => {
 
 const createCapsule = async (capsuleData) => {
   try {
-    console.log("Sending POST request with data:", capsuleData)
     const response = await axios.post(API_URL, capsuleData)
     return response.data
   } catch (error) {
@@ -34,8 +33,6 @@ const createCapsule = async (capsuleData) => {
 
 const updateCapsule = async (id, capsuleData) => {
   try {
-    console.log("Sending PUT request with data:", capsuleData)
-    console.log("ID:", id)
     const response = await axios.put(`${API_URL}/${id}`, capsuleData)
     return response.data
   } catch (error) {
@@ -59,5 +56,5 @@ export default {
   updateCapsule,
   deleteCapsule,
   getCapsules,
-  getCapsuleById
+  getCapsuleById,
 }
