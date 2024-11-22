@@ -240,7 +240,7 @@ button.menu-item:hover {
   background-color: #faf3e0;
   border-radius: 8px;
   box-sizing: border-box;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
   justify-content: center;
 }
 
@@ -398,8 +398,8 @@ button.menu-item:hover {
     box-sizing: none;
     box-shadow: none;
   }
-  /* form {
+  form {
     box-sizing: none;
     box-shadow: none;
-  } */
+  }
 }
