@@ -27,6 +27,27 @@ const NotificationWindow = ({ user }) => {
     }
   }, [user])
 
+  const markAsRead = async (notifId) => {
+    try {
+      const token = localStorage.getItem("token")
+      await axios.patch(
+        `${import.meta.env.VITE_BACK_END_SERVER_URL}/users/${
+          user.id
+        }/notifications/${notifId}`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
+
+      setNotifications((prev) =>
+        prev.map((notif) =>
+          notif._id === notifId ? { ...notif, read: true } : notif
+        )
+      )
+    } catch (err) {
+      console.error("Failed to mark notification as read:", err.message)
+    }
+  }
+
   if (error) return <p className="error-message">{error}</p>
 
   return (
@@ -40,7 +61,11 @@ const NotificationWindow = ({ user }) => {
             <li key={notif._id} className={notif.read ? "read" : "unread"}>
               <p>{notif.message}</p>
               <small>{new Date(notif.createdAt).toLocaleString()}</small>
-              {!notif.read}
+              {!notif.read && (
+                <button onClick={() => markAsRead(notif._id)}>
+                  Mark as Read
+                </button>
+              )}
             </li>
           ))}
         </ul>

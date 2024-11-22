@@ -6,22 +6,16 @@ const CapsulesList = ({ currentUser, capsules, openDetailsPage }) => {
   const [selectedType, setSelectedType] = useState("outgoing")
   const navigate = useNavigate()
 
-  if (!currentUser || !capsules) {
-    return <h3>Loading Capsules...</h3>
-  }
-
   const handleCreateButton = () => {
     navigate(`/capsule-form/new/${currentUser.id}`)
   }
 
-  const capsulesOutgoingFiltered = (capsules || []).filter(
-    (capsule) => capsule.sender?._id === currentUser?.id
+  const capsulesOutgoingFiltered = capsules.filter(
+    (capsule) => capsule.sender === currentUser.id
   )
-
-  const capsulesIncomingFiltered = (capsules || []).filter(
-    (capsule) => capsule.recipient?._id === currentUser?.id
+  const capsulesIncomingFiltered = capsules.filter(
+    (capsule) => capsule.recipient === currentUser.id
   )
-
   const capsulesOutgoing = capsulesOutgoingFiltered.map((capsule) => (
     <li key={capsule._id}>
       <button
@@ -35,14 +29,9 @@ const CapsulesList = ({ currentUser, capsules, openDetailsPage }) => {
             alt="Capsule icon"
           />
           <div className="text-capsule">
-            <h3>To: {capsule.recipient?.username || "Unknown Recipient"}</h3>
+            <h3>To: {capsule.recipient}</h3>
             <p>Status: {capsule.status}</p>
-            <p>
-              Release Date:{" "}
-              {capsule.releaseDate
-                ? new Date(capsule.releaseDate).toLocaleDateString()
-                : "N/A"}
-            </p>
+            <p>Release Date: {capsule.releaseDate}</p>
           </div>
         </div>
       </button>
@@ -62,14 +51,9 @@ const CapsulesList = ({ currentUser, capsules, openDetailsPage }) => {
             alt="Capsule icon"
           />
           <div className="text-capsule">
-            <h3>From: {capsule.sender?.username || "Unknown Sender"}</h3>
+            <h3>From: {capsule.sender}</h3>
             <p>Status: {capsule.status}</p>
-            <p>
-              Release Date:{" "}
-              {capsule.releaseDate
-                ? new Date(capsule.releaseDate).toLocaleDateString()
-                : "N/A"}
-            </p>
+            <p>Release Date: {capsule.releaseDate} </p>
           </div>
         </div>
       </button>

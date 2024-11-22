@@ -15,32 +15,28 @@ const CapsuleDetail = ({
 
   const lockCapsule = async () => {
     const updatedData = {
-      sender: selectedCapsule.sender._id,
-      recipient: selectedCapsule.recipient._id,
+      ...selectedCapsule,
       status: "sealed",
       sealDate: new Date().toISOString(),
     }
+
+    console.log("Locking capsule with data:", updatedData)
 
     try {
       const response = await capsuleService.updateCapsule(
         selectedCapsule._id,
         updatedData
       )
+      console.log("Capsule locked successfully:", response)
       setSelectedCapsule(response)
-
-      setCapsules((prevCapsules) =>
-        prevCapsules.map((capsule) =>
-          capsule._id === response._id ? response : capsule
-        )
-      )
     } catch (error) {
       console.error("Error locking capsule:", error)
     }
   }
 
   const shouldShowItems = () => {
-    const isSender = selectedCapsule.sender._id === currentUser.id
-    const isRecipient = selectedCapsule.recipient._id === currentUser.id
+    const isSender = selectedCapsule.sender === currentUser.id
+    const isRecipient = selectedCapsule.recipient === currentUser.id
     const isReleaseDateReached =
       new Date() >= new Date(selectedCapsule.releaseDate)
     if (isReleaseDateReached) {
@@ -65,6 +61,7 @@ const CapsuleDetail = ({
           selectedCapsule._id,
           { status: "released" }
         )
+        console.log("Capsule auto-released:", updatedCapsule)
         setSelectedCapsule(updatedCapsule)
         setCapsules((prevCapsules) =>
           prevCapsules.map((capsule) =>
@@ -81,6 +78,7 @@ const CapsuleDetail = ({
     const fetchCapsule = async () => {
       if (!selectedCapsule || selectedCapsule._id !== capsuleId) {
         try {
+          console.log("Fetching capsule with ID:", capsuleId)
           const capsule = await capsuleService.getCapsuleById(capsuleId)
           setSelectedCapsule(capsule)
         } catch (error) {
@@ -100,11 +98,17 @@ const CapsuleDetail = ({
 
   const handleDeleteCapsule = async (id) => {
     try {
-      await capsuleService.deleteCapsule(id)
+      const deletedCapsule = await capsuleService.deleteCapsule(id)
+
+      if (deletedCapsule.error) {
+        throw new Error(deletedCapsule.error)
+      }
+
       setCapsules((prevCapsules) =>
         prevCapsules.filter((capsule) => capsule._id !== id)
       )
       setSelectedCapsule(null)
+      console.log("Navigating to:", `/capsules-list/${currentUser.id}`)
       navigate(`/capsules-list/${currentUser.id}`)
     } catch (error) {
       console.error("Error deleting capsule:", error)
@@ -125,14 +129,14 @@ const CapsuleDetail = ({
       <img src="../assets/capsule_icon.jpg" alt="Capsule Icon" />
 
       <h3>
-        {selectedCapsule.recipient._id === selectedCapsule.sender._id
+        {selectedCapsule.recipient === selectedCapsule.sender
           ? "To My Future Self"
-          : `To ${selectedCapsule.recipient?.username || "Unknown Sender"}`}
+          : `To ${selectedCapsule.recipient}`}
       </h3>
       <h3>
-        {selectedCapsule.recipient._id === selectedCapsule.sender._id
+        {selectedCapsule.recipient === selectedCapsule.sender
           ? "From Me"
-          : `From ${selectedCapsule.sender?.username || "Unknown Recipient"}`}
+          : `From ${selectedCapsule.sender}`}
       </h3>
       <div>
         {shouldShowItems() ? (

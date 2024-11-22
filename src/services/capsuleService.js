@@ -1,17 +1,9 @@
 import axios from "axios"
-
 const API_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}/capsules`
-
-const getAuthHeaders = () => {
-  const token = localStorage.getItem("token")
-  return { Authorization: `Bearer ${token}` }
-}
 
 const getCapsules = async () => {
   try {
-    const response = await axios.get(API_URL, {
-      headers: getAuthHeaders(),
-    })
+    const response = await axios.get(API_URL)
     return response.data
   } catch (error) {
     console.error("Error getting all capsules:", error)
@@ -21,9 +13,7 @@ const getCapsules = async () => {
 
 const getCapsuleById = async (id) => {
   try {
-    const response = await axios.get(`${API_URL}/${id}`, {
-      headers: getAuthHeaders(),
-    })
+    const response = await axios.get(`${API_URL}/${id}`)
     return response.data
   } catch (error) {
     console.error(`Error getting capsule with id ${id}`, error)
@@ -33,9 +23,8 @@ const getCapsuleById = async (id) => {
 
 const createCapsule = async (capsuleData) => {
   try {
-    const response = await axios.post(API_URL, capsuleData, {
-      headers: getAuthHeaders(),
-    })
+    console.log("Sending POST request with data:", capsuleData)
+    const response = await axios.post(API_URL, capsuleData)
     return response.data
   } catch (error) {
     console.error("Error creating capsule:", error)
@@ -45,9 +34,7 @@ const createCapsule = async (capsuleData) => {
 
 const updateCapsule = async (id, capsuleData) => {
   try {
-    const response = await axios.put(`${API_URL}/${id}`, capsuleData, {
-      headers: getAuthHeaders(),
-    })
+    const response = await axios.put(`${API_URL}/${id}`, capsuleData)
     return response.data
   } catch (error) {
     console.error("Error updating capsule:", error)
@@ -57,9 +44,7 @@ const updateCapsule = async (id, capsuleData) => {
 
 const deleteCapsule = async (id) => {
   try {
-    const response = await axios.delete(`${API_URL}/${id}`, {
-      headers: getAuthHeaders(),
-    })
+    const response = await axios.delete(`${API_URL}/${id}`)
     return response.data
   } catch (error) {
     console.error(`Error deleting capsule with id ${id}`, error)
