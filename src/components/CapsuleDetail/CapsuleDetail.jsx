@@ -8,16 +8,20 @@ const CapsuleDetail = ({
   setSelectedCapsule,
   updateSelectedCapsule,
   setCapsules,
-  currentUser
+  currentUser,
 }) => {
   const { capsuleId } = useParams()
   const navigate = useNavigate()
 
   const lockCapsule = async () => {
+    const senderId = selectedCapsule.sender._id
+    const recipientId = selectedCapsule.recipient._id
+
     const updatedData = {
-      ...selectedCapsule,
+      sender: senderId,
+      recipient: recipientId,
       status: "sealed",
-      sealDate: new Date().toISOString()
+      sealDate: new Date().toISOString(),
     }
 
     console.log("Locking capsule with data:", updatedData)
