@@ -131,12 +131,12 @@ const CapsuleDetail = ({
       <h3>
         {selectedCapsule.recipient === selectedCapsule.sender
           ? "To My Future Self"
-          : `To ${selectedCapsule.recipient}`}
+          : `To ${selectedCapsule.recipient?.username || "Unknown Sender"}`}
       </h3>
       <h3>
         {selectedCapsule.recipient === selectedCapsule.sender
           ? "From Me"
-          : `From ${selectedCapsule.sender}`}
+          : `From ${selectedCapsule.sender?.username || "Unknown Recipient"}`}
       </h3>
       <div>
         {shouldShowItems() ? (
