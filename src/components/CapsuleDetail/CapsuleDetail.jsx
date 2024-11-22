@@ -8,25 +8,27 @@ const CapsuleDetail = ({
   setSelectedCapsule,
   updateSelectedCapsule,
   setCapsules,
-  currentUser,
+  currentUser
 }) => {
   const { capsuleId } = useParams()
   const navigate = useNavigate()
 
   const lockCapsule = async () => {
-    try {
-      const updatedCapsule = await capsuleService.updateCapsule(
-        selectedCapsule._id,
-        { status: "sealed", sealDate: new Date().toISOString() }
-      )
-      console.log("Capsule locked successfully:", updatedCapsule)
+    const updatedData = {
+      ...selectedCapsule,
+      status: "sealed",
+      sealDate: new Date().toISOString()
+    }
 
-      setSelectedCapsule(updatedCapsule)
-      setCapsules((prevCapsules) =>
-        prevCapsules.map((capsule) =>
-          capsule._id === updatedCapsule._id ? updatedCapsule : capsule
-        )
+    console.log("Locking capsule with data:", updatedData)
+
+    try {
+      const response = await capsuleService.updateCapsule(
+        selectedCapsule._id,
+        updatedData
       )
+      console.log("Capsule locked successfully:", response)
+      setSelectedCapsule(response)
     } catch (error) {
       console.error("Error locking capsule:", error)
     }
