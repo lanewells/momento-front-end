@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { Routes, Route, Navigate } from "react-router-dom"
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom"
 import MasterPage from "./MasterPage/MasterPage"
 import SignupForm from "./components/SignupForm/SignupForm"
 import SigninForm from "./components/SigninForm/SigninForm"
@@ -19,8 +19,6 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [capsules, setCapsules] = useState([])
   const [selectedCapsule, setSelectedCapsule] = useState(null)
-  const [capsuleFormOpen, setCapsuleFormOpen] = useState(false)
-  const [openDetails, setOpenDetails] = useState(false)
 
   useEffect(() => {
     const token = localStorage.getItem("token")
@@ -50,7 +48,7 @@ const App = () => {
     setUser(null)
     localStorage.removeItem("token")
   }
-
+  const navigate = useNavigate()
   useEffect(() => {
     const fetchCapsules = async () => {
       try {
@@ -75,17 +73,12 @@ const App = () => {
     setSelectedCapsule(preparedCapsule)
   }
 
-  const handleCapsuleFormView = (capsule) => {
-    if (!capsule._id) {
-      setSelectedCapsule(null)
-    }
-    setCapsuleFormOpen(!capsuleFormOpen)
-  }
-
   const openDetailsPage = (capsule) => {
     if (capsule._id) {
       updateSelectedCapsule(capsule)
-      setOpenDetails(!openDetails)
+      navigate(`/capsule-detail/${capsule._id}`)
+    } else {
+      console.log("Error opening details page. No capsule id")
     }
   }
 
@@ -127,51 +120,58 @@ const App = () => {
           <Route
             path="/capsules-list/:userId"
             element={
-              capsuleFormOpen ? (
-                <CapsuleForm
-                  currentUser={user}
-                  capsules={capsules}
-                  setCapsules={setCapsules}
-                  selectedCapsule={selectedCapsule}
-                  setSelectedCapsule={setSelectedCapsule}
-                  setCapsuleFormOpen={setCapsuleFormOpen}
-                />
-              ) : !openDetails ? (
-                <CapsulesList
-                  currentUser={user}
-                  capsules={capsules}
-                  openDetailsPage={openDetailsPage}
-                  handleCapsuleFormView={handleCapsuleFormView}
-                />
-              ) : (
-                <Navigate to="/capsule-detail/:capsuleId" />
-              )
+              <CapsulesList
+                currentUser={user}
+                capsules={capsules}
+                setCapsules={setCapsules}
+                setSelectedCapsule={setSelectedCapsule}
+                openDetailsPage={openDetailsPage}
+              />
+            }
+          />
+          <Route
+            path="/capsules-list"
+            element={
+              <Navigate to={`/capsules-list/${user?.id || "/signin"}`} />
+            }
+          />
+          <Route
+            path="/capsule-form/new/:userId"
+            element={
+              <CapsuleForm
+                currentUser={user}
+                capsules={capsules}
+                setCapsules={setCapsules}
+                selectedCapsule={selectedCapsule}
+                setSelectedCapsule={setSelectedCapsule}
+              />
+            }
+          />
+          <Route
+            path="/capsule-form/edit/:capsuleId"
+            element={
+              <CapsuleForm
+                currentUser={user}
+                capsules={capsules}
+                setCapsules={setCapsules}
+                selectedCapsule={selectedCapsule}
+                setSelectedCapsule={setSelectedCapsule}
+              />
             }
           />
           <Route
             path="/capsule-detail/:capsuleId"
             element={
-              capsuleFormOpen ? (
-                <CapsuleForm
-                  currentUser={user}
-                  capsules={capsules}
-                  setCapsules={setCapsules}
-                  selectedCapsule={selectedCapsule}
-                  setSelectedCapsule={setSelectedCapsule}
-                  setCapsuleFormOpen={setCapsuleFormOpen}
-                />
-              ) : (
-                <CapsuleDetail
-                  selectedCapsule={selectedCapsule}
-                  setSelectedCapsule={setSelectedCapsule}
-                  updateSelectedCapsule={updateSelectedCapsule}
-                  setCapsules={setCapsules}
-                  setCapsuleFormOpen={setCapsuleFormOpen}
-                  handleCapsuleFormView={handleCapsuleFormView}
-                />
-              )
+              <CapsuleDetail
+                selectedCapsule={selectedCapsule}
+                setSelectedCapsule={setSelectedCapsule}
+                updateSelectedCapsule={updateSelectedCapsule}
+                setCapsules={setCapsules}
+                currentUser={user}
+              />
             }
           />
+
           <Route
             path="/edit-user/:userId"
             element={<EditUser user={user} onUserUpdate={setUser} />}
