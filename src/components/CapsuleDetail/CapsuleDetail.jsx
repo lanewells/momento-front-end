@@ -8,25 +8,31 @@ const CapsuleDetail = ({
   setSelectedCapsule,
   updateSelectedCapsule,
   setCapsules,
-  currentUser
+  currentUser,
 }) => {
   const { capsuleId } = useParams()
   const navigate = useNavigate()
 
   const lockCapsule = async () => {
-    try {
-      const updatedCapsule = await capsuleService.updateCapsule(
-        selectedCapsule._id,
-        { status: "sealed", sealDate: new Date().toISOString() }
-      )
-      console.log("Capsule locked successfully:", updatedCapsule)
+    const senderId = selectedCapsule.sender._id
+    const recipientId = selectedCapsule.recipient._id
 
-      setSelectedCapsule(updatedCapsule)
-      setCapsules((prevCapsules) =>
-        prevCapsules.map((capsule) =>
-          capsule._id === updatedCapsule._id ? updatedCapsule : capsule
-        )
+    const updatedData = {
+      sender: senderId,
+      recipient: recipientId,
+      status: "sealed",
+      sealDate: new Date().toISOString(),
+    }
+
+    console.log("Locking capsule with data:", updatedData)
+
+    try {
+      const response = await capsuleService.updateCapsule(
+        selectedCapsule._id,
+        updatedData
       )
+      console.log("Capsule locked successfully:", response)
+      setSelectedCapsule(response)
     } catch (error) {
       console.error("Error locking capsule:", error)
     }
@@ -129,12 +135,12 @@ const CapsuleDetail = ({
       <h3>
         {selectedCapsule.recipient === selectedCapsule.sender
           ? "To My Future Self"
-          : `To ${selectedCapsule.recipient}`}
+          : `To ${selectedCapsule.recipient?.username || "Unknown Sender"}`}
       </h3>
       <h3>
         {selectedCapsule.recipient === selectedCapsule.sender
           ? "From Me"
-          : `From ${selectedCapsule.sender}`}
+          : `From ${selectedCapsule.sender?.username || "Unknown Recipient"}`}
       </h3>
       <div>
         {shouldShowItems() ? (

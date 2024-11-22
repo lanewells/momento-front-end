@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import capsuleService from "../../services/capsuleService"
+import axios from "axios"
 
 const CapsuleForm = ({
   currentUser,
   capsules,
   setCapsules,
   selectedCapsule,
-  setSelectedCapsule
+  setSelectedCapsule,
 }) => {
   const { userId, capsuleId } = useParams()
   const navigate = useNavigate()
@@ -17,10 +18,11 @@ const CapsuleForm = ({
     recipient: "",
     sealDate: "",
     releaseDate: "",
-    status: "pending seal"
+    status: "pending seal",
   }
 
   const [formData, setFormData] = useState(initialState)
+  const [usernames, setUsernames] = useState([])
 
   useEffect(() => {
     const fetchCapsuleIfNeeded = async () => {
@@ -35,8 +37,9 @@ const CapsuleForm = ({
 
           setFormData({
             ...capsule,
+            recipient: capsule.recipient._id || "",
             sealDate: capsule.sealDate?.split("T")[0] || "",
-            releaseDate: capsule.releaseDate?.split("T")[0] || ""
+            releaseDate: capsule.releaseDate?.split("T")[0] || "",
           })
         } catch (error) {
           console.error("Error fetching capsule:", error)
@@ -44,13 +47,35 @@ const CapsuleForm = ({
       } else if (selectedCapsule) {
         setFormData({
           ...selectedCapsule,
+          recipient: selectedCapsule.recipient._id || "",
           sealDate: selectedCapsule.sealDate?.split("T")[0] || "",
-          releaseDate: selectedCapsule.releaseDate?.split("T")[0] || ""
+          releaseDate: selectedCapsule.releaseDate?.split("T")[0] || "",
         })
       }
     }
 
     fetchCapsuleIfNeeded()
+
+    const fetchUsernames = async () => {
+      try {
+        const token = localStorage.getItem("token")
+        console.log("Token:", token)
+        const response = await axios.get(
+          `${import.meta.env.VITE_BACK_END_SERVER_URL}/users/usernames`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+        setUsernames(response.data)
+        console.log("Usernames fetched:", response.data)
+      } catch (error) {
+        console.error("Error fetching usernames:", error)
+      }
+    }
+
+    fetchUsernames()
   }, [capsuleId, selectedCapsule, setSelectedCapsule])
 
   const handleChange = (evt) => {
@@ -99,31 +124,36 @@ const CapsuleForm = ({
       return
     }
 
-    const formattedData = {
-      ...formData,
-      sealDate: formData.sealDate
-        ? new Date(formData.sealDate).toISOString()
-        : null,
-      releaseDate: formData.releaseDate
-        ? new Date(formData.releaseDate).toISOString()
-        : null
+    if (!formData.recipient) {
+      alert("Please select a recipient.")
+      return
     }
 
-    console.log("Submitting data:", formattedData)
-
     try {
+      const formattedData = {
+        ...formData,
+        sealDate: formData.sealDate
+          ? new Date(formData.sealDate).toISOString()
+          : null,
+        releaseDate: formData.releaseDate
+          ? new Date(formData.releaseDate).toISOString()
+          : null,
+      }
+
       if (capsuleId) {
-        const updatedCapsule = await handleUpdateCapsule(
-          capsuleId,
-          formattedData
-        )
-        setFormData(updatedCapsule)
+        await handleUpdateCapsule(capsuleId, formattedData)
       } else {
         await handleAddCapsule(formattedData)
       }
       navigate(`/capsules-list/${currentUser.id}`)
     } catch (error) {
       console.error("Error submitting capsule form:", error)
+      if (error.response) {
+        console.error("Error response data:", error.response.data)
+        alert(`An error occurred: ${error.response.data.error}`)
+      } else {
+        alert("An error occurred. Please try again.")
+      }
     }
   }
 
@@ -141,18 +171,24 @@ const CapsuleForm = ({
         <input
           id="sender"
           name="sender"
-          value={formData.sender || currentUser?.id || ""}
+          value={formData.sender.username || currentUser?.id || ""}
           readOnly
         />
 
         <label htmlFor="recipient">Recipient</label>
-        <input
+        <select
           id="recipient"
           name="recipient"
-          type="text"
           value={formData.recipient || ""}
           onChange={handleChange}
-        />
+        >
+          <option value="">Select a recipient</option>
+          {usernames.map((user) => (
+            <option key={user._id} value={user._id}>
+              {user.username}
+            </option>
+          ))}
+        </select>
 
         <label htmlFor="sealDate">Seal Date (Optional)</label>
         <input
