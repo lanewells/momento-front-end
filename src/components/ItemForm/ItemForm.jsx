@@ -9,6 +9,8 @@ const ItemForm = () => {
   const [capsuleId, setCapsuleId] = useState(location.state?.capsuleId || "")
   const navigate = useNavigate()
 
+  const [selectedTab, setSelectedTab] = useState("message")
+
   const [formData, setFormData] = useState({
     type: "message",
     text: "",
@@ -35,6 +37,7 @@ const ItemForm = () => {
             }
           )
           setFormData(response.data)
+          setSelectedTab(response.data.type || "message")
 
           if (!capsuleId && response.data.capsule) {
             setCapsuleId(response.data.capsule)
@@ -105,7 +108,6 @@ const ItemForm = () => {
         )
       } else {
         // Create new item
-
         await axios.post(
           `${import.meta.env.VITE_BACK_END_SERVER_URL}/items`,
           filteredFormData,
@@ -128,36 +130,35 @@ const ItemForm = () => {
 
   return (
     <div className="item-form-container">
-      <h2 className="item-form-heading">{id ? "Edit Item" : "Create Item"}</h2>
-      <form className="item-form" onSubmit={handleSubmit}>
-        <div className="item-form-section">
-          <label className="item-form-label">Type</label>
-          <ul className="item-form-type-list">
-            <li>
-              <input
-                type="radio"
-                id="message"
-                name="type"
-                value="message"
-                checked={formData.type === "message"}
-                onChange={handleChange}
-              />
-              <label htmlFor="message">Message</label>
-            </li>
-            <li>
-              <input
-                type="radio"
-                id="hyperlink"
-                name="type"
-                value="hyperlink"
-                checked={formData.type === "hyperlink"}
-                onChange={handleChange}
-              />
-              <label htmlFor="hyperlink">Hyperlink</label>
-            </li>
-          </ul>
+      <div className="item-form-header">
+        <h2 className="item-form-heading">
+          {id ? "Edit Item" : "Create Item"}
+        </h2>
+      </div>
+
+      <div className="item-form-tabs">
+        <div
+          className={`tab ${selectedTab === "message" ? "active-tab" : ""}`}
+          onClick={() => {
+            setSelectedTab("message")
+            setFormData({ ...formData, type: "message" })
+          }}
+        >
+          Message
         </div>
-        {formData.type === "message" && (
+        <div
+          className={`tab ${selectedTab === "hyperlink" ? "active-tab" : ""}`}
+          onClick={() => {
+            setSelectedTab("hyperlink")
+            setFormData({ ...formData, type: "hyperlink" })
+          }}
+        >
+          Hyperlink
+        </div>
+      </div>
+
+      <form className="item-form" onSubmit={handleSubmit}>
+        {selectedTab === "message" && (
           <div className="item-form-section">
             <label className="item-form-label">Message</label>
             <textarea
@@ -169,7 +170,7 @@ const ItemForm = () => {
             />
           </div>
         )}
-        {formData.type === "hyperlink" && (
+        {selectedTab === "hyperlink" && (
           <div className="item-form-section">
             <label className="item-form-label">Hyperlink</label>
             <input
