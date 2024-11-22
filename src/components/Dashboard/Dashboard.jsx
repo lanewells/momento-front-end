@@ -57,6 +57,7 @@ const Dashboard = ({ user, handleLogout }) => {
         <button onClick={handleDeleteAccount}>Delete Account</button>
         <button onClick={handleLogout}>Logout</button>
       </div>
+      <img src="../src/assets/logo_bkg_cream.png" alt="Momento In Time" />
     </div>
   )
 }
