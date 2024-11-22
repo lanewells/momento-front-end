@@ -1,4 +1,3 @@
-
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import "./CapsulesList.css"
@@ -7,16 +6,20 @@ const CapsulesList = ({ currentUser, capsules, openDetailsPage }) => {
   const [selectedType, setSelectedType] = useState("outgoing")
   const navigate = useNavigate()
 
+  if (!currentUser || !capsules) {
+    return <h3>Loading Capsules...</h3>
+  }
+
   const handleCreateButton = () => {
     navigate(`/capsule-form/new/${currentUser.id}`)
   }
 
-  const capsulesOutgoingFiltered = capsules.filter(
-    (capsule) => capsule.sender && capsule.sender._id === currentUser.id
+  const capsulesOutgoingFiltered = (capsules || []).filter(
+    (capsule) => capsule.sender?._id === currentUser?.id
   )
 
-  const capsulesIncomingFiltered = capsules.filter(
-    (capsule) => capsule.recipient && capsule.recipient._id === currentUser.id
+  const capsulesIncomingFiltered = (capsules || []).filter(
+    (capsule) => capsule.recipient?._id === currentUser?.id
   )
 
   const capsulesOutgoing = capsulesOutgoingFiltered.map((capsule) => (
@@ -35,7 +38,10 @@ const CapsulesList = ({ currentUser, capsules, openDetailsPage }) => {
             <h3>To: {capsule.recipient?.username || "Unknown Recipient"}</h3>
             <p>Status: {capsule.status}</p>
             <p>
-              Release Date: {new Date(capsule.releaseDate).toLocaleDateString()}
+              Release Date:{" "}
+              {capsule.releaseDate
+                ? new Date(capsule.releaseDate).toLocaleDateString()
+                : "N/A"}
             </p>
           </div>
         </div>
@@ -59,7 +65,10 @@ const CapsulesList = ({ currentUser, capsules, openDetailsPage }) => {
             <h3>From: {capsule.sender?.username || "Unknown Sender"}</h3>
             <p>Status: {capsule.status}</p>
             <p>
-              Release Date: {new Date(capsule.releaseDate).toLocaleDateString()}
+              Release Date:{" "}
+              {capsule.releaseDate
+                ? new Date(capsule.releaseDate).toLocaleDateString()
+                : "N/A"}
             </p>
           </div>
         </div>

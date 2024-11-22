@@ -14,12 +14,9 @@ const CapsuleDetail = ({
   const navigate = useNavigate()
 
   const lockCapsule = async () => {
-    const senderId = selectedCapsule.sender._id
-    const recipientId = selectedCapsule.recipient._id
-
     const updatedData = {
-      sender: senderId,
-      recipient: recipientId,
+      sender: selectedCapsule.sender._id,
+      recipient: selectedCapsule.recipient._id,
       status: "sealed",
       sealDate: new Date().toISOString(),
     }
@@ -30,14 +27,20 @@ const CapsuleDetail = ({
         updatedData
       )
       setSelectedCapsule(response)
+
+      setCapsules((prevCapsules) =>
+        prevCapsules.map((capsule) =>
+          capsule._id === response._id ? response : capsule
+        )
+      )
     } catch (error) {
       console.error("Error locking capsule:", error)
     }
   }
 
   const shouldShowItems = () => {
-    const isSender = selectedCapsule.sender === currentUser.id
-    const isRecipient = selectedCapsule.recipient === currentUser.id
+    const isSender = selectedCapsule.sender._id === currentUser.id
+    const isRecipient = selectedCapsule.recipient._id === currentUser.id
     const isReleaseDateReached =
       new Date() >= new Date(selectedCapsule.releaseDate)
     if (isReleaseDateReached) {
@@ -97,12 +100,7 @@ const CapsuleDetail = ({
 
   const handleDeleteCapsule = async (id) => {
     try {
-      const deletedCapsule = await capsuleService.deleteCapsule(id)
-
-      if (deletedCapsule.error) {
-        throw new Error(deletedCapsule.error)
-      }
-
+      await capsuleService.deleteCapsule(id)
       setCapsules((prevCapsules) =>
         prevCapsules.filter((capsule) => capsule._id !== id)
       )
@@ -127,12 +125,12 @@ const CapsuleDetail = ({
       <img src="../assets/capsule_icon.jpg" alt="Capsule Icon" />
 
       <h3>
-        {selectedCapsule.recipient === selectedCapsule.sender
+        {selectedCapsule.recipient._id === selectedCapsule.sender._id
           ? "To My Future Self"
           : `To ${selectedCapsule.recipient?.username || "Unknown Sender"}`}
       </h3>
       <h3>
-        {selectedCapsule.recipient === selectedCapsule.sender
+        {selectedCapsule.recipient._id === selectedCapsule.sender._id
           ? "From Me"
           : `From ${selectedCapsule.sender?.username || "Unknown Recipient"}`}
       </h3>
